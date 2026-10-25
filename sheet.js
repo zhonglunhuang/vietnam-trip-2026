@@ -22,6 +22,7 @@
     mode: { walking: '步行', driving: '開車', transit: '大眾運輸', bicycling: '單車' },
     category: { transport: '交通', stay: '住宿', ticket: '門票', food: '餐飲', shopping: '購物', other: '其他' },
     focal: { center: '置中', top: '偏上', bottom: '偏下' },
+    choice: { active: '出遊', relax: '放鬆' },
   };
 
   /* ---------- 資料表與欄位 ----------
@@ -45,6 +46,11 @@
       ['note_id', '代號'], ['day_id', '日期代號'], ['sort', '排序', 'num'], ['kind', '種類', 'enum:kind'],
       ['label', '標籤'], ['text', '內容'], ['status', '預訂狀態', 'enum:status'],
     ] },
+    { key: 'options', label: '每日選項', id: 'option_id', note: '每天可以臨時決定的選項：出遊＝狀況好時可以訂的一日遊或活動；放鬆＝附近的餐廳與按摩。book_by 寫最晚要在什麼時候訂。', cols: [
+      ['option_id', '代號'], ['day_id', '日期代號'], ['sort', '排序', 'num'], ['mode', '類型', 'enum:choice'], ['title', '標題'], ['desc', '說明'],
+      ['book_by', '最晚預訂'], ['price', '價格'], ['duration', '時間長度'], ['links', '訂購連結', 'lines'], ['place_ids', '地點', 'list'],
+      ['food_ids', '餐廳', 'list'], ['tips', '要先知道'],
+    ] },
     { key: 'places', label: '地點', id: 'place_id', note: '景點、車站、住宿等所有地點。maps_query 是在 Google 地圖搜尋用的字串。', cols: [
       ['place_id', '地點代號'], ['region', '地區', 'enum:region'], ['category', '分類'], ['name_zh', '中文名稱'],
       ['name_vn', '越南文名稱'], ['address', '越南文地址'], ['maps_query', 'Google 地圖搜尋'], ['lat', '緯度', 'num'],
@@ -62,10 +68,10 @@
       ['dish_id', '菜色代號'], ['region', '地區', 'enum:region'], ['name_vn', '越南文'], ['name_zh', '中文'],
       ['desc', '介紹'], ['photo', '照片'],
     ] },
-    { key: 'bookings', label: '訂位', id: 'booking_id', note: '請勿填寫票號、訂位代碼或付款資訊；本表內容會顯示在公開網站。', cols: [
+    { key: 'bookings', label: '訂位', id: 'booking_id', note: '請勿填寫票號、訂位代碼或付款資訊；本表內容會顯示在公開網站。訂購連結一行一個，格式「標籤 | https://網址」。', cols: [
       ['booking_id', '代號'], ['sort', '排序', 'num'], ['date', '日期'], ['when_label', '時間標示'], ['type', '類別'],
       ['title', '項目'], ['detail', '說明'], ['status', '狀態', 'enum:status'], ['next_action', '下一步'],
-      ['due', '建議完成日'], ['place_id', '地點'],
+      ['links', '訂購連結', 'lines'], ['due', '建議完成日'], ['place_id', '地點'],
     ] },
     { key: 'stays', label: '住宿', id: 'stay_id', note: '每段住宿一列。', cols: [
       ['stay_id', '住宿代號'], ['name', '名稱'], ['dates', '日期'], ['check_in_out', '入住與退房'], ['address', '地址'],
@@ -114,6 +120,11 @@
     for (const [code, zh] of Object.entries(map)) { reverse[name][zh] = code; reverse[name][code] = code; }
   }
   function toValue(raw, type) {
+    // 陣列（data.js 裡手寫的清單）：list、lines 直接逐項整理，其他型別接成字串
+    if (Array.isArray(raw)) {
+      if (type === 'list' || type === 'lines') return raw.map((x) => String(x == null ? '' : x).trim()).filter(Boolean);
+      raw = raw.join(type === 'lines' ? '\n' : ', ');
+    }
     const s = raw == null ? '' : String(raw).trim();
     if (!type || type === 'text') return s;
     if (type === 'num') { if (s === '') return null; const n = Number(s.replace(/[,\s]/g, '')); return Number.isFinite(n) ? n : null; }
@@ -130,6 +141,31 @@
     if (type === 'lines') return Array.isArray(v) ? v.join('\n') : String(v);
     if (type && type.startsWith('enum:')) return v ? (ENUMS[type.slice(5)][v] || v) : '';
     return v;
+  }
+
+  /* 只接受 http(s) 網址，其餘（javascript: 等）一律不算網址 */
+  const httpUrl = (u) => { const s = String(u == null ? '' : u).trim(); return /^https?:\/\/[^\s<>"]+$/i.test(s) ? s : ''; };
+
+  /* 訂購連結：一行「標籤 | https://網址」；只有網址時用網域當標籤；沒有有效網址的行略過 */
+  function parseLink(line) {
+    const s = String(line || '').trim();
+    let m = s.match(/^(.*?)\s*[|｜]\s*(\S+)\s*$/);
+    if (m && !httpUrl(m[2])) m = null;
+    const url = httpUrl(m ? m[2] : s);
+    if (!url) return null;
+    let label = m ? m[1].trim() : '';
+    if (!label) { try { label = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { label = '連結'; } }
+    return { label, url };
+  }
+
+  /* Commons 原始頁面網址 → 作品標題（File: 後面的檔名，底線換空白，去掉副檔名） */
+  function commonsTitle(sourceUrl) {
+    const s = String(sourceUrl || '');
+    const i = s.indexOf('File:');
+    if (i < 0) return '';
+    let name = s.slice(i + 5).split(/[?#]/)[0];
+    try { name = decodeURIComponent(name); } catch (e) { /* 編碼不完整時保留原字串 */ }
+    return name.replace(/_/g, ' ').replace(/\.[a-z0-9]{2,5}$/i, '').trim();
   }
 
   /* 把一張表的原始列（物件，欄位名可能是「中文 代號」）轉成乾淨的物件陣列 */
@@ -152,7 +188,7 @@
     const kv = Object.fromEntries(T.trip.map((r) => [r.key, r.value]));
 
     const photos = {};
-    for (const p of T.photos) photos[p.photo_key] = { file: p.file, url: p.url, credit: p.credit, license: p.license, licenseUrl: p.license_url, source: p.source_url, alt: p.alt, focal: p.focal || 'center' };
+    for (const p of T.photos) photos[p.photo_key] = { file: p.file, url: p.url, title: commonsTitle(p.source_url), credit: p.credit, license: p.license, licenseUrl: p.license_url, source: p.source_url, alt: p.alt, focal: p.focal || 'center' };
 
     const places = {};
     for (const p of T.places) places[p.place_id] = {
@@ -163,6 +199,10 @@
 
     const days = T.days.slice().sort((a, b) => a.date.localeCompare(b.date)).map((d) => {
       const notes = T.day_notes.filter((n) => n.day_id === d.day_id).sort(bySort);
+      const options = T.options.filter((o) => o.day_id === d.day_id).sort(bySort).map((o) => ({
+        id: o.option_id, mode: o.mode || 'active', title: o.title, desc: o.desc, bookBy: o.book_by, price: o.price, duration: o.duration,
+        links: o.links.map(parseLink).filter(Boolean), places: o.place_ids, food: o.food_ids, tips: o.tips,
+      }));
       return {
         id: d.day_id, date: d.date, dow: d.weekday, region: d.region, city: d.city, title: d.title, lead: d.lead,
         cover: d.cover_photo, stay: d.stay_id, planB: d.plan_b,
@@ -174,6 +214,7 @@
           desc: i.desc, tip: i.tip, status: i.status, unverified: i.unverified, places: i.place_ids, food: i.food_ids,
           photo: i.photo, mode: i.travel_mode,
         })),
+        options,
       };
     });
 
@@ -205,7 +246,7 @@
       dishes: T.dishes.map((d) => ({ id: d.dish_id, region: d.region, vn: d.name_vn, zh: d.name_zh, desc: d.desc, photo: d.photo })),
       bookings: T.bookings.slice().sort(bySort).map((b) => ({
         id: b.booking_id, date: b.date, when: b.when_label, type: b.type, title: b.title, detail: b.detail,
-        status: b.status, next: b.next_action, due: b.due, place: b.place_id,
+        status: b.status, next: b.next_action, links: b.links.map(parseLink).filter(Boolean), due: b.due, place: b.place_id,
       })),
       stays: T.stays.map((s) => ({
         id: s.stay_id, name: s.name, dates: s.dates, inout: s.check_in_out, addr: s.address, area: s.area,
@@ -248,6 +289,10 @@
       i.place_ids.forEach((p) => need(places, p, `時間軸 ${i.item_id} 地點`)); i.food_ids.forEach((f) => need(food, f, `時間軸 ${i.item_id} 餐廳`));
     }
     for (const n of T.day_notes) need(days, n.day_id, `每日重點 ${n.note_id} 日期`);
+    for (const o of T.options) {
+      need(days, o.day_id, `每日選項 ${o.option_id} 日期`);
+      o.place_ids.forEach((p) => need(places, p, `每日選項 ${o.option_id} 地點`)); o.food_ids.forEach((f) => need(food, f, `每日選項 ${o.option_id} 餐廳`));
+    }
     for (const p of T.places) need(photos, p.photo, `地點 ${p.place_id} 照片`);
     for (const f of T.food) need(photos, f.photo, `餐廳 ${f.food_id} 照片`);
     for (const d of T.dishes) need(photos, d.photo, `必吃 ${d.dish_id} 照片`);
@@ -256,5 +301,5 @@
     return problems;
   }
 
-  return { ENUMS, TABLES, BY_KEY, keyOf, header, sheetName, toValue, toCell, normalizeRows, tablesToTrip, checkTables };
+  return { ENUMS, TABLES, BY_KEY, keyOf, header, sheetName, toValue, toCell, normalizeRows, tablesToTrip, checkTables, httpUrl, parseLink, commonsTitle };
 });

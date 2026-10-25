@@ -13,25 +13,39 @@
 6. 複製「網頁應用程式網址」（結尾是 `/exec`）。
 7. 打開網站 →「出發前」→「Google Sheet 同步」：貼上網址、填寫入密碼，按「測試寫入密碼」。
 
-想讓每支手機都自動連上，把網址填進 repo 的 `config.js`（`sheetApi`）再推上 GitHub。網址可以公開，寫入密碼不要寫進任何檔案。
+想讓每支手機都自動連上，把網址填進 repo 的 `config.js`（`sheetApi`）再推上 GitHub。寫入密碼不要寫進任何檔案。
+
+**網址是公開的。** 部署的存取權是「所有人」，任何拿到 `/exec` 網址的人都能用 GET 讀到行程內容（每日、地點、餐廳、訂位、預算、行前清單的項目與勾選狀態……）。所以：
+
+- GET 不回傳「記帳 expenses」，行前清單的「完成時間 done_at」也一律留白。
+- 記帳只能用 POST `expenses.list` 讀，要帶寫入密碼。網站在有寫入密碼的手機上才會讀到同行者記的帳；沒有密碼的手機只看得到自己記的。
+- 不要在任何分頁填機票票號、訂位代碼、護照號碼或付款資訊。
 
 ## 之後修改程式
 
 改了 `Code.gs` 要重新部署才會生效：**部署 → 管理部署作業 → 編輯（鉛筆）→ 版本選「新版本」→ 部署**。網址不會變。
 
+從舊版更新時（GET 還會回傳記帳的版本），貼上新的 `Code.gs` 後一定要部署新版本，記帳才會從公開的 GET 拿掉。新增「每日選項 options」分頁或「訂位」的「訂購連結 links」欄時，可以重新執行 **setupFromWebsite**，或自己在試算表加上分頁與欄位（標題寫成「中文 代號」，例如「訂購連結 links」）。
+
 ## API
 
-| 方法 | 內容 |
-| --- | --- |
-| `GET <網址>` | 回傳 `{ ok, generated, tables }`，每張表是物件陣列，欄位名是英文代號、值是試算表上看到的文字 |
-| `POST <網址>`，body 為 JSON 文字 `{ key, action, ... }` | `ping`；`check`（`id`, `done`）；`expense.add`（`expense`）；`expense.delete`（`id`） |
+| 方法 | 需要寫入密碼 | 內容 |
+| --- | --- | --- |
+| `GET <網址>` | 不用 | 回傳 `{ ok, generated, tables }`，每張表是物件陣列，欄位名是英文代號、值是試算表上看到的文字。**不含 `expenses`**，`checklist` 的 `done_at` 是空字串 |
+| `POST`，`action: "ping"` | 要 | 檢查寫入密碼，回 `{ ok: true }` |
+| `POST`，`action: "expenses.list"` | 要 | 回 `{ ok, generated, expenses }`，`expenses` 是「記帳」分頁的所有列（格式同 GET 的表） |
+| `POST`，`action: "check"`，`id`、`done` | 要 | 勾選／取消行前清單，同時寫入完成時間 |
+| `POST`，`action: "expense.add"`，`expense` | 要 | 新增一筆記帳；`expense_id` 已存在時回 `{ ok: true, duplicate: true }`，不會重複新增 |
+| `POST`，`action: "expense.delete"`，`id` | 要 | 刪除一筆記帳；找不到時也回 `{ ok: true, missing: true }` |
 
-POST 請用 `Content-Type: text/plain`，瀏覽器才不會先送 CORS 預檢。
+POST 的 body 是 JSON 文字 `{ key, action, ... }`，`key` 是寫入密碼。請用 `Content-Type: text/plain`，瀏覽器才不會先送 CORS 預檢。
+
+失敗時回 `{ ok: false, error }`。暫時性的問題（試算表忙碌、服務逾時）另外帶 `retry: true`：網站會保留這筆，稍後再送；其他錯誤（例如找不到清單項目）會放棄這筆並把手機上的暫存還原，記帳會標成「寫回失敗」並可以重試。
 
 ## 選單功能
 
 試算表上方會多一個「北越十日」選單：
 
 - **從網站匯入初始資料**：重建所有分頁（會覆蓋現有資料，執行前會確認）。
-- **檢查資料**：找出重複代號、不存在的參照（例如時間軸指到不存在的地點）和不在選單裡的選項。
-- **預覽網站讀到的資料筆數**。
+- **檢查資料**：找出重複代號和不存在的參照（例如時間軸或每日選項指到不存在的地點、餐廳）。
+- **預覽網站讀到的資料筆數**（記帳另外標示「不公開」）。

@@ -48,7 +48,7 @@ def cell_value(v, typ):
     if typ and typ.startswith('enum:'):
         return ENUMS[typ[5:]].get(v, v) if v else None
     if isinstance(v, list):
-        return ', '.join(v)
+        return ('\n' if typ == 'lines' else ', ').join(v)
     return None if v in ('', None) else str(v)
 
 

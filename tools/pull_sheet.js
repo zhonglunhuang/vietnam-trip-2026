@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* 從 Google Sheet（Apps Script 網頁應用程式）抓最新資料，更新內建快照 data.js 與 seed.json。
    網站平常就會直接讀試算表；這個工具是讓離線備援與第一次開啟時看到的內容也跟上。
+   data.js 與 seed.json 會公開在 GitHub：寫入前一律清掉記帳、行前清單的勾選與完成時間。
    用法：node tools/pull_sheet.js [API 網址]；省略網址時用 config.js 的 sheetApi */
 const fs = require('fs');
 const path = require('path');
@@ -21,6 +22,10 @@ const overview = self.TRIP_DATA.overview;
   const res = await fetch(url, { redirect: 'follow' });
   const j = await res.json();
   if (!j.ok) throw new Error(j.error || '讀取失敗');
+  if (!j.tables || !Array.isArray(j.tables.days) || !j.tables.days.length) throw new Error('試算表的「每日 days」分頁是空的或找不到，沒有更新 data.js');
+  // 私人資料不進公開檔案（舊版 Apps Script 的 GET 仍會回傳記帳）
+  j.tables.expenses = [];
+  for (const r of j.tables.checklist || []) { r.done = false; r.done_at = ''; }
   const S = require(path.join(ROOT, 'sheet.js'));
   const problems = S.checkTables(j.tables);
   if (problems.length) console.warn('試算表有 ' + problems.length + ' 個參照問題（仍會寫入）：\n  ' + problems.slice(0, 20).join('\n  '));

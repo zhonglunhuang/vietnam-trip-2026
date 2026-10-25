@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* 由 data.js 與 sheet.js 產生 seed.json：Apps Script 的「從網站匯入初始資料」會讀這個檔案，
    建立試算表的所有分頁（標題、資料、下拉選單、核取方塊、欄寬、預算公式）。
-   用法：node tools/export_seed.js */
+   用法：node tools/export_seed.js [輸出檔，預設 seed.json] */
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
@@ -15,6 +15,7 @@ const WIDE = {
   alt: 300, sources: 300, dish: 260, address: 260, maps_query: 240, hours: 220, price: 220, title: 220, name_zh: 170, name_vn: 190,
   name: 190, value: 300, area: 220, check_in_out: 160, unverified_note: 200, credit: 160, license_url: 200, source_url: 220,
   item: 180, vn: 220, zh: 150, number: 140, route_stops: 220, place_ids: 180, food_ids: 200,
+  links: 320, book_by: 140, duration: 110,
 };
 const width = (key) => WIDE[key] || (key.endsWith('_id') ? 110 : 90);
 
@@ -91,11 +92,13 @@ const guide = [
   ['', ''],
   ['網站會寫回的分頁', 'head'],
   ['「行前清單 checklist」的完成與完成時間：在網站勾選時自動寫入。', ''],
-  ['「記帳 expenses」：在網站按「記一筆」會新增一列；在這裡直接新增也會顯示在網站上。', ''],
+  ['「記帳 expenses」：在網站按「記一筆」會新增一列；在這裡直接新增也會顯示在網站上（只有填了寫入密碼的手機讀得到）。', ''],
   ['「預算總覽」只在試算表裡用公式加總，網站不讀這一頁。', ''],
   ['', ''],
   ['隱私', 'head'],
   ['網站是公開的，這裡的內容會顯示在網站上。不要填機票票號、訂位代碼、護照號碼或付款資訊。', ''],
+  ['例外：「記帳 expenses」不公開，網站要有寫入密碼才讀得到；「行前清單 checklist」的完成時間也不會傳到網站。', ''],
+  ['「訂位 bookings」的訂購連結一行一個，格式「標籤 | https://網址」，網站會顯示成按鈕。', ''],
   ['', ''],
   ['連接網站', 'head'],
   ['Apps Script 的部署步驟在 GitHub repo 的 apps-script/README.md：設定 WRITE_KEY、部署成網頁應用程式，再把網址貼到網站「出發前 → Google Sheet 同步」。', ''],
@@ -103,6 +106,6 @@ const guide = [
 ];
 
 const seed = { generated: self.TRIP_DATA.generated, guide, summary, tabs };
-const out = path.join(ROOT, 'seed.json');
+const out = process.argv[2] ? path.resolve(process.argv[2]) : path.join(ROOT, 'seed.json');
 fs.writeFileSync(out, JSON.stringify(seed));
 console.log('seed.json', Math.round(fs.statSync(out).size / 1024), 'KB,', tabs.length, 'tabs');

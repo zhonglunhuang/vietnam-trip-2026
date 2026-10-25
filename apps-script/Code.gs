@@ -5,19 +5,25 @@
  *   1. 專案設定 → 指令碼屬性：新增 WRITE_KEY（寫入密碼，網站勾清單、記帳時要輸入）
  *   2. 部署 → 新增部署作業 → 網頁應用程式；執行身分「我」、存取權「所有人」
  *
- * GET  <網址>                 回傳所有資料表（JSON）
- * POST <網址>  body 為 JSON 文字：{ key, action, ... }
+ * GET  <網址>                 回傳行程資料表（JSON）；不含「記帳」，行前清單的完成時間留白。
+ *                              網址是公開的（網站的 config.js 也會放），所以這裡只放可以公開的內容。
+ * POST <網址>  body 為 JSON 文字：{ key, action, ... }，key 是寫入密碼
  *      action = 'ping'                         檢查寫入密碼
+ *      action = 'expenses.list'                讀取「記帳」所有列
  *      action = 'check'          { id, done }  勾選／取消行前清單
  *      action = 'expense.add'    { expense }   新增一筆記帳（expense_id 重複時略過）
- *      action = 'expense.delete' { id }        刪除一筆記帳
+ *      action = 'expense.delete' { id }        刪除一筆記帳（找不到時也回 ok）
+ *   失敗時回 { ok: false, error }；暫時性的錯誤（忙碌、服務逾時）另外帶 retry: true，網站會保留這筆稍後重送。
  *
  * 分頁名稱與欄位標題都是「中文 代號」，程式只認最後的英文代號。
  */
 
 var TZ = 'Asia/Ho_Chi_Minh';
-var CONTENT = ['trip', 'days', 'items', 'day_notes', 'places', 'food', 'dishes', 'bookings', 'stays',
+var CONTENT = ['trip', 'days', 'items', 'day_notes', 'options', 'places', 'food', 'dishes', 'bookings', 'stays',
   'budget', 'expenses', 'checklist', 'tips', 'contacts', 'phrases', 'photos'];
+/** 不經寫入密碼就能讀到的資料表：記帳只能用 POST expenses.list（要密碼）讀 */
+var PRIVATE = ['expenses'];
+var PUBLIC = CONTENT.filter(function (k) { return PRIVATE.indexOf(k) < 0; });
 
 function keyOf_(s) {
   var m = String(s || '').trim().match(/([a-z][a-z0-9_]*)\s*$/);
@@ -46,12 +52,14 @@ function readTable_(sheet) {
   return rows;
 }
 
-function readAll_() {
+/** includePrivate=false：公開版本（網站 GET 用），不含記帳、清空行前清單的完成時間 */
+function readAll_(includePrivate) {
   var tables = {};
-  CONTENT.forEach(function (key) {
+  (includePrivate ? CONTENT : PUBLIC).forEach(function (key) {
     var sh = sheetFor_(key);
     tables[key] = sh ? readTable_(sh) : [];
   });
+  if (!includePrivate) (tables.checklist || []).forEach(function (r) { if ('done_at' in r) r.done_at = ''; });
   return {
     ok: true,
     generated: Utilities.formatDate(new Date(), TZ, "yyyy-MM-dd'T'HH:mm:ssXXX"),
@@ -65,7 +73,7 @@ function json_(obj) {
 
 function doGet() {
   try {
-    return json_(readAll_());
+    return json_(readAll_(false));
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
@@ -82,21 +90,39 @@ function doPost(e) {
   if (!key) return json_({ ok: false, error: '尚未設定寫入密碼：請在 Apps Script 專案設定的指令碼屬性加入 WRITE_KEY' });
   if (req.key !== key) return json_({ ok: false, error: '寫入密碼不正確' });
 
+  if (req.action === 'ping') return json_({ ok: true });
+  if (req.action === 'expenses.list') {
+    try {
+      return json_(listExpenses_());
+    } catch (err) {
+      return json_({ ok: false, retry: true, error: String(err) });
+    }
+  }
+
   var lock = LockService.getScriptLock();
-  if (!lock.tryLock(10000)) return json_({ ok: false, error: '試算表忙碌中，請稍後再試' });
+  if (!lock.tryLock(10000)) return json_({ ok: false, retry: true, error: '試算表忙碌中，請稍後再試' });
   try {
     switch (req.action) {
-      case 'ping': return json_({ ok: true });
       case 'check': return json_(setCheck_(String(req.id || ''), req.done === true));
       case 'expense.add': return json_(addExpense_(req.expense || {}));
       case 'expense.delete': return json_(deleteExpense_(String(req.id || '')));
       default: return json_({ ok: false, error: '不支援的動作：' + req.action });
     }
   } catch (err) {
-    return json_({ ok: false, error: String(err) });
+    // 試算表服務的例外多半是暫時性的（逾時、服務錯誤），讓網站保留這筆稍後重送
+    return json_({ ok: false, retry: true, error: String(err) });
   } finally {
     lock.releaseLock();
   }
+}
+
+function listExpenses_() {
+  var sh = sheetFor_('expenses');
+  return {
+    ok: true,
+    generated: Utilities.formatDate(new Date(), TZ, "yyyy-MM-dd'T'HH:mm:ssXXX"),
+    expenses: sh ? readTable_(sh) : [],
+  };
 }
 
 /** 欄位代號 → 欄號（1 起算） */
@@ -222,8 +248,9 @@ function setupFromWebsite() {
       if (c.options) rng.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(c.options, true).setAllowInvalid(false).build());
     });
     sh.getRange(1, 1, 1, ncol).setValues([t.headers]).setFontWeight('bold').setBackground('#E6E9F2').setWrap(true).setVerticalAlignment('middle');
-    if (t.rows.length) sh.getRange(2, 1, t.rows.length, ncol).setValues(t.rows).setVerticalAlignment('top');
+    // 先插核取方塊再寫值：insertCheckboxes() 會把範圍內的格子全部設成 FALSE，順序反過來會清掉 seed 裡的 TRUE
     t.columns.forEach(function (c) { if (c.checkbox) sh.getRange(2, c.col, t.rows.length || 1, 1).insertCheckboxes(); });
+    if (t.rows.length) sh.getRange(2, 1, t.rows.length, ncol).setValues(t.rows).setVerticalAlignment('top');
     t.widths.forEach(function (w, j) { sh.setColumnWidth(j + 1, w); });
     sh.setFrozenRows(1);
     sh.setFrozenColumns(1);
@@ -255,14 +282,16 @@ function setupFromWebsite() {
 }
 
 function showCounts() {
-  var t = readAll_().tables;
-  var lines = Object.keys(t).map(function (k) { return k + '：' + t[k].length + ' 列'; });
+  var t = readAll_(true).tables;
+  var lines = Object.keys(t).map(function (k) {
+    return k + '：' + t[k].length + ' 列' + (PRIVATE.indexOf(k) >= 0 ? '（不公開，網站要有寫入密碼才讀得到）' : '');
+  });
   SpreadsheetApp.getUi().alert('網站會讀到的資料', lines.join('\n'), SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
 /** 檢查重複代號與找不到的參照（例如時間軸指到不存在的地點） */
 function checkData() {
-  var t = readAll_().tables;
+  var t = readAll_(true).tables;
   var problems = [];
   var ids = function (key, field) {
     var s = {};
@@ -275,8 +304,8 @@ function checkData() {
   };
   var days = ids('days', 'day_id'), places = ids('places', 'place_id'), food = ids('food', 'food_id');
   var photos = ids('photos', 'photo_key'), stays = ids('stays', 'stay_id');
-  ['items', 'day_notes', 'dishes', 'bookings', 'budget', 'expenses', 'checklist', 'tips', 'contacts', 'phrases'].forEach(function (k) {
-    var idKey = { items: 'item_id', day_notes: 'note_id', dishes: 'dish_id', bookings: 'booking_id', budget: 'budget_id',
+  ['items', 'day_notes', 'options', 'dishes', 'bookings', 'budget', 'expenses', 'checklist', 'tips', 'contacts', 'phrases'].forEach(function (k) {
+    var idKey = { items: 'item_id', day_notes: 'note_id', options: 'option_id', dishes: 'dish_id', bookings: 'booking_id', budget: 'budget_id',
       expenses: 'expense_id', checklist: 'check_id', tips: 'tip_id', contacts: 'contact_id', phrases: 'phrase_id' }[k];
     ids(k, idKey);
   });
@@ -292,6 +321,12 @@ function checkData() {
     need(photos, i.photo, '時間軸 ' + i.item_id + ' 照片');
     list(i.place_ids).forEach(function (p) { need(places, p, '時間軸 ' + i.item_id + ' 地點'); });
     list(i.food_ids).forEach(function (f) { need(food, f, '時間軸 ' + i.item_id + ' 餐廳'); });
+  });
+  (t.day_notes || []).forEach(function (n) { need(days, n.day_id, '每日重點 ' + n.note_id + ' 日期'); });
+  (t.options || []).forEach(function (o) {
+    need(days, o.day_id, '每日選項 ' + o.option_id + ' 日期');
+    list(o.place_ids).forEach(function (p) { need(places, p, '每日選項 ' + o.option_id + ' 地點'); });
+    list(o.food_ids).forEach(function (f) { need(food, f, '每日選項 ' + o.option_id + ' 餐廳'); });
   });
   (t.places || []).forEach(function (p) { need(photos, p.photo, '地點 ' + p.place_id + ' 照片'); });
   (t.food || []).forEach(function (f) { need(photos, f.photo, '餐廳 ' + f.food_id + ' 照片'); });
