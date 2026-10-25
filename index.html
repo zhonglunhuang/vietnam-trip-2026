@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>北越十日 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="2026/11/2–11/11 河內・沙壩・寧平 個人旅行手冊：每日時間軸、地圖導航、美食、交通、訂位狀態與行前清單。">
+<meta name="theme-color" content="#1E2C57">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="北越十日">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><b>北越十日</b><span>河內・沙壩・寧平　2026.11.2–11.11</span></div>
+    <span class="pill-net" id="net" hidden>離線中</span>
+  </div>
+</header>
+
+<main id="app" aria-live="polite"></main>
+
+<div class="wrap"><footer class="foot">
+  <p>資料查證日期：2026 年 10 月 25 日。票價、營業時間與班次可能變動，出發前請再以官方網站或訂位平台確認。</p>
+  <p>本頁不顯示機票票號與訂位代碼；請以航空公司、KKday 與訂房平台的確認信為準。</p>
+</footer></div>
+
+<div class="tabbar"><nav aria-label="主要分頁">
+  <a href="#itinerary" data-tab="itinerary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>行程</a>
+  <a href="#map" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></svg>地圖</a>
+  <a href="#food" data-tab="food"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0zM7 7l10-4"/></svg>美食</a>
+  <a href="#book" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8a2 2 0 0 0 0 4v5h18v-5a2 2 0 0 1 0-4V3H3zM14 3v14"/></svg>預訂</a>
+  <a href="#prep" data-tab="prep"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>準備</a>
+</nav></div>
+
+<div class="show" id="show" hidden role="dialog" aria-modal="true" aria-label="出示卡">
+  <div class="big"></div>
+  <div class="sub"></div>
+  <div class="hint"></div>
+  <div><button class="btn primary" type="button" id="show-close">關閉</button></div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
