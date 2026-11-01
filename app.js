@@ -454,67 +454,51 @@
     }).join('');
     return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="行程路線圖，依真實經緯度比例繪製"><rect width="${W}" height="${H}" fill="var(--paper)"/>${rivers}${labels}${links}${nodes}${scaleBar(pr, W, H)}</svg>`;
   }
-  /* 相近的號碼互相推開幾格（最多推到不重疊），避開比例尺與指北針；推開的號碼拉一條細線回到真正的位置 */
-  function spreadPins(pins, W, H, R, keepOut) {
-    const min = R * 2 + 2;
-    for (let it = 0; it < 200; it++) {
-      let moved = false;
-      for (let i = 0; i < pins.length; i++) for (let j = i + 1; j < pins.length; j++) {
-        const a = pins[i], b = pins[j];
-        const dx = b.cx - a.cx, dy = b.cy - a.cy, d = Math.hypot(dx, dy);
-        if (d >= min - 0.01) continue;
-        const ang = j * 2.399963; // 完全重疊時用固定角度分開，每次畫出來都一樣
-        const ux = d > 0.01 ? dx / d : Math.cos(ang), uy = d > 0.01 ? dy / d : Math.sin(ang);
-        const push = (min - d) / 2 + 0.05;
-        a.cx -= ux * push; a.cy -= uy * push; b.cx += ux * push; b.cy += uy * push; moved = true;
-      }
-      for (const q of pins) {
-        q.cx = Math.min(W - R - 2, Math.max(R + 2, q.cx)); q.cy = Math.min(H - R - 2, Math.max(R + 2, q.cy));
-        for (const k of keepOut) {
-          if (q.cx + R > k.x0 && q.cx - R < k.x1 && q.cy + R > k.y0 && q.cy - R < k.y1) { q.cy = k.y1 >= H ? k.y0 - R - 1 : k.y1 + R + 1; moved = true; }
-        }
-      }
-      if (!moved) break;
-    }
-    return pins;
-  }
-  function regionSVG(list) {
-    const pts = list.filter((x) => x.n);
-    if (pts.length < 2) return '';
-    const W = 360, H = 250, R = 10.5;
-    const pr = projector(pts.map((x) => x.p), W, H, 26);
-    const grid = Array.from({ length: 7 }, (_, i) => `<line x1="${(i + 1) * W / 8}" y1="0" x2="${(i + 1) * W / 8}" y2="${H}" stroke="var(--rule)" stroke-width=".7"/>`).join('')
-      + Array.from({ length: 5 }, (_, i) => `<line x1="0" y1="${(i + 1) * H / 6}" x2="${W}" y2="${(i + 1) * H / 6}" stroke="var(--rule)" stroke-width=".7"/>`).join('');
-    const pins = spreadPins(pts.map((x) => { const tx = pr.x(x.p.lng), ty = pr.y(x.p.lat); return { x, tx, ty, cx: tx, cy: ty }; }), W, H, R, mapFurniture(pr, W, H));
-    const leaders = pins.filter((q) => Math.hypot(q.cx - q.tx, q.cy - q.ty) > 4).map((q) => `<line x1="${q.tx.toFixed(1)}" y1="${q.ty.toFixed(1)}" x2="${q.cx.toFixed(1)}" y2="${q.cy.toFixed(1)}" stroke="var(--ink-3)" stroke-width="1"/>
-        <circle cx="${q.tx.toFixed(1)}" cy="${q.ty.toFixed(1)}" r="2.2" fill="${regionVar(q.x.p.region)}"/>`).join('');
-    const dots = pins.map((q) => `<g><circle cx="${q.cx.toFixed(1)}" cy="${q.cy.toFixed(1)}" r="${R}" fill="${regionVar(q.x.p.region)}" stroke="var(--paper)" stroke-width="2"/>
-        <text x="${q.cx.toFixed(1)}" y="${(q.cy + 3.8).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--paper)">${q.x.n}</text></g>`).join('');
-    return `<div class="mapframe"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="地點相對位置，依經緯度比例繪製"><rect width="${W}" height="${H}" fill="var(--paper)"/>${grid}${leaders}${dots}${scaleBar(pr, W, H)}</svg>
-      <div class="map-legend"><span>號碼對應下方地點；有座標的地點才會標在圖上，靠得太近的號碼稍微推開，細線指向實際位置。這是依經緯度畫的相對位置，不是街道地圖，實際怎麼走請按導航。</span></div></div>`;
-  }
   function renderMap() {
     const seg = Object.keys(REGIONS).map((k) => `<button type="button" data-region-filter="${k}" aria-pressed="${mapRegion === k}">${REGIONS[k]}</button>`).join('');
-    const list = Object.entries(TRIP.places).filter(([, p]) => !p.hidden && (mapRegion === 'all' || p.region === mapRegion)).map(([id, p]) => ({ id, p, n: 0 }));
-    // 只有畫在地區小地圖上的地點（有經緯度）才編號
-    const hasXY = (p) => typeof p.lat === 'number' && typeof p.lng === 'number';
-    if (mapRegion !== 'all' && list.filter((x) => hasXY(x.p)).length >= 2) { let k = 0; for (const x of list) if (hasXY(x.p)) x.n = ++k; }
-    const cards = list.map(({ id, p, n }) => `<button type="button" class="gcard" data-place="${esc(id)}" data-region="${esc(p.region)}">
-      ${ph(p.photo, { fallback: p.name, sizes: '(max-width: 640px) 50vw, 240px', extra: n ? `<span class="n">${n}</span>` : '' })}
+    const list = Object.entries(TRIP.places).filter(([, p]) => !p.hidden && (mapRegion === 'all' || p.region === mapRegion)).map(([id, p]) => ({ id, p }));
+    const cards = list.map(({ id, p }) => `<button type="button" class="gcard" data-place="${esc(id)}" data-region="${esc(p.region)}">
+      ${ph(p.photo, { fallback: p.name, sizes: '(max-width: 640px) 50vw, 240px' })}
       <b>${esc(p.name)}</b><span>${esc(p.vn || '')}</span>${p.status || p.unverified ? `<span class="chips">${chip(p.status)}${unv(p.unverified)}</span>` : ''}</button>`).join('');
     const legs = (TRIP.overview.legs || []).map((l) => `<div><b>${esc(l.k)}</b><span>${esc(l.v)}</span></div>`).join('');
     return `<div class="col view">
-      <header class="page-head"><h1>地圖</h1><p>依真實經緯度比例畫的路線；每個地點都能直接開 Google 地圖導航。</p></header>
-      <div class="mapframe">${overviewSVG()}
-        <div class="map-legend"><span><i style="border-color:var(--ink-3);border-top-style:dotted"></i>航班</span><span><i style="border-color:var(--sapa)"></i>夜車 11/3</span><span><i style="border-color:var(--todo);border-top-style:dashed"></i>夜巴 11/8（待訂）</span><span><i style="border-color:var(--ninhbinh);border-top-style:dotted"></i>接駁、包車</span></div>
+      <header class="page-head"><h1>地圖</h1><p>單指拖移，雙指縮放或旋轉，雙指上下滑可以改變傾斜角度。點圓點看地點資訊。</p></header>
+      <div class="seg" role="group" aria-label="篩選地區">${seg}</div>
+      <div class="map3d-wrap" id="map3d-wrap">
+        <div class="map3d" id="map3d-slot"></div>
+        <p class="map3d-caption" hidden></p>
+        <div class="map3d-bar">
+          <button type="button" class="btn" data-map3d="tour" aria-pressed="false">${icon('route')}跟著行程飛一趟</button>
+          <button type="button" class="btn" data-map3d="tilt">切換 2D／3D</button>
+        </div>
       </div>
+      <div class="mapframe" id="map-fallback" hidden>${overviewSVG()}
+        <div class="map-legend"><span>目前沒有網路或手機不支援 3D 地圖，先顯示路線示意圖。</span></div>
+      </div>
+      <div class="map-legend flat"><span><i style="border-color:#5B6270;border-top-style:dotted"></i>航班</span><span><i style="border-color:#33429A"></i>夜車 11/3</span><span><i style="border-color:#B4552D;border-top-style:dashed"></i>夜巴 11/8（待訂）</span><span><i style="border-color:#157365;border-top-style:dotted"></i>接駁、包車</span></div>
       ${legs ? `<div class="legs">${legs}</div>` : ''}
       <div class="section-title"><h2>地點</h2><small>${list.length} 處</small></div>
-      <div class="seg" role="group" aria-label="篩選地區">${seg}</div>
-      ${mapRegion !== 'all' ? regionSVG(list) : ''}
       <div class="grid2">${cards}</div>
-      <p class="fineprint">出發前建議在 Google 地圖下載「河內」「沙壩」「寧平」的離線地圖；沙壩山區步道訊號不穩。</p>
+      <p class="fineprint">3D 地圖要有網路，看過的區域會存在手機上。出發前建議在 Google 地圖下載「河內」「沙壩」「寧平」的離線地圖；沙壩山區步道訊號不穩。</p>
     </div>`;
+  }
+  /* 把行程資料整理成 3D 地圖要用的格式 */
+  function mapOptions() {
+    const O = TRIP.overview, cs = getComputedStyle(document.documentElement);
+    const colors = {}; ['hanoi', 'sapa', 'ninhbinh', 'transit'].forEach((k) => { colors[k] = cs.getPropertyValue('--' + k).trim(); });
+    const has = (p) => p && typeof p.lat === 'number' && typeof p.lng === 'number';
+    const node = (id) => O.nodes.find((n) => n.id === id);
+    const links = (O.links || []).map((l) => ({ kind: l.kind, a: node(l.from), b: node(l.to) })).filter((l) => l.a && l.b)
+      .map((l) => ({ kind: l.kind, coords: [[l.a.lng, l.a.lat], [l.b.lng, l.b.lat]] }));
+    const tour = TRIP.days.map((d) => {
+      const ids = ((d.route && d.route.stops) || []).concat(d.items.flatMap((i) => i.places || []));
+      const p = ids.map(P).find(has);
+      return p ? { lat: p.lat, lng: p.lng, label: `${md(d.date)} ${d.title}` } : null;
+    }).filter(Boolean);
+    return { region: mapRegion, colors, links, tour,
+      places: Object.entries(TRIP.places).filter(([, p]) => !p.hidden).map(([id, p]) => Object.assign({ id }, p)),
+      onPlace: placeSheet,
+      onFail() { const w = $('#map3d-wrap'), f = $('#map-fallback'); if (w) w.hidden = true; if (f) f.hidden = false; } };
   }
 
   /* ---------- 美食 ---------- */
@@ -771,6 +755,7 @@
     if (view === 'itinerary') { const t = $('.tile[aria-pressed="true"]'); if (t) t.scrollIntoView({ block: 'nearest', inline: 'center' }); fillWeather(); loadWeather(); }
     if (view === 'prep') { convFrom('vnd'); updateSyncUI(); updateInstallUI(); }
     if (view === 'book') expPreview();
+    if (view === 'map') window.Map3D.show($('#map3d-slot'), mapOptions()); else window.Map3D.hide();
     window.scrollTo(0, scrollTop ? 0 : y);
   }
   function route() {
@@ -799,6 +784,7 @@
     if (ds.food) { foodSheet(ds.food); return; }
     if (ds.dish) { dishSheet(ds.dish); return; }
     if (ds.credit) { creditSheet(ds.credit); return; }
+    if (ds.map3d) { if (ds.map3d === 'tour') window.Map3D.tour(); else window.Map3D.toggleTilt(); return; }
     if (ds.regionFilter) { mapRegion = ds.regionFilter; render(false); return; }
     if (ds.fregion) { foodRegion = ds.fregion; render(false); return; }
     if (ds.showPlace) { const p = P(ds.showPlace); if (p) showCard(p.vn || p.name, p.name, 'Làm ơn chở tôi đến địa chỉ này.', p.addr); return; }

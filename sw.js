@@ -4,9 +4,11 @@
    照片：快取優先（檔案不會變）。安裝時預先存好所有 600px 照片，沙壩山區沒訊號也看得到；
      大螢幕會要 1200px 的版本，離線又沒存過時改給 600px 的那張。
    Google Sheet 的資料由網頁自己存在 localStorage，這裡不快取 Apps Script 的回應。 */
-const VERSION = 'v202611020022';
+const VERSION = 'v202611020054';
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
+const MAP_CACHE = 'map-tiles';
+const MAP_CACHE_MAX = 1500;
 const SHELL_FILES = [
   './',
   './index.html',
@@ -14,7 +16,10 @@ const SHELL_FILES = [
   './config.js',
   './sheet.js',
   './data.js',
+  './map3d.js',
   './app.js',
+  './vendor/maplibre-gl-5.24.0.js',
+  './vendor/maplibre-gl-5.24.0.css',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -40,7 +45,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== RUNTIME && k !== 'photos-large').map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== RUNTIME && k !== 'photos-large' && k !== MAP_CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -62,10 +67,32 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(networkFirst(req, 3000));
     return;
   }
+  if (url.hostname === 'tiles.openfreemap.org' || url.pathname.startsWith('/elevation-tiles-prod/')) {
+    event.respondWith(mapResource(req, url));
+    return;
+  }
   if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
     event.respondWith(cacheFirst(req));
   }
 });
+
+/* 地圖：圖磚看過就留著，山區沒訊號時還看得到；樣式等設定檔先用快取、背景更新。超過上限就刪最舊的 */
+async function mapResource(req, url) {
+  const cache = await caches.open(MAP_CACHE);
+  const hit = await cache.match(req);
+  const isTile = /\.(pbf|png|webp)$/.test(url.pathname);
+  if (hit && isTile) return hit;
+  const update = fetch(req).then(async (res) => {
+    if (res && res.ok) {
+      await cache.put(req, res.clone());
+      const keys = await cache.keys();
+      if (keys.length > MAP_CACHE_MAX) await Promise.all(keys.slice(0, 200).map((k) => cache.delete(k)));
+    }
+    return res;
+  });
+  if (hit) { update.catch(() => {}); return hit; }
+  return update;
+}
 
 /* 1200px 的照片拿不到時，改用已經預先存好的 600px 版本 */
 async function smallerPhoto(req) {
