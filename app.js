@@ -217,6 +217,72 @@
     </section>`;
   }
 
+  /* ---------- 天氣與穿著：Open-Meteo 預報，存在手機供離線查看 ---------- */
+  const WX_PLACES = {
+    hanoi: { name: '河內', lat: 21.0285, lng: 105.8542 },
+    sapa: { name: '沙壩', lat: 22.3364, lng: 103.8438, elevation: 1600 },
+    fansipan: { name: 'Fansipan 山頂', lat: 22.3033, lng: 103.775, elevation: 3143 },
+    ninhbinh: { name: '寧平', lat: 20.2527, lng: 105.9181 },
+  };
+  const WX_DAY = { 1105: ['sapa', 'fansipan'], 1108: ['sapa', 'hanoi'] };
+  const WX_CODE = (c) => c === 0 ? '晴' : c <= 2 ? '多雲時晴' : c === 3 ? '陰' : c <= 48 ? '有霧' : c <= 57 ? '毛毛雨' : c <= 67 ? '有雨' : c <= 77 ? '下雪' : c <= 82 ? '陣雨' : '雷雨';
+  const WX_TTL = 3 * 3600 * 1000;
+  const wxState = { data: store.get('wx', null), loading: false };
+  function wearAdvice(w) {
+    const out = [];
+    if (w.min <= 8) out.push('羽絨外套、毛帽、手套');
+    else if (w.max < 17 || w.min < 13) out.push('長袖加刷毛衣或薄羽絨');
+    else if (w.max < 23) out.push('長袖加薄外套');
+    else if (w.max < 28) out.push('短袖或薄長袖，早晚加薄外套');
+    else out.push(w.rainPct >= 60 ? '短袖、透氣長褲' : '短袖、透氣長褲，注意防曬');
+    if (w.rainMm >= 10) out.push('防水外套、防滑防水鞋');
+    else if (w.rainMm >= 1 || w.rainPct >= 60) out.push('帶摺傘或輕便雨衣');
+    return out.join('；');
+  }
+  function fillWeather() {
+    const el = $('#wx'); if (!el) return;
+    const d = dayById(el.dataset.day);
+    const keys = WX_DAY[d.id] || [d.region];
+    const rows = keys.map((k) => {
+      const days = wxState.data && wxState.data.places[k];
+      const w = days && days[d.date];
+      if (!w) return '';
+      return `<div class="wx-row"><div class="wx-head"><b>${esc(WX_PLACES[k].name)}</b><span class="wx-temp">${Math.round(w.min)}–${Math.round(w.max)}°C</span></div>
+        <p class="wx-sky">${esc(WX_CODE(w.code))}，降雨機率 ${Math.round(w.rainPct)}%，雨量約 ${w.rainMm.toFixed(1)} mm</p>
+        <p class="wx-wear"><span>穿著</span>${esc(wearAdvice(w))}</p></div>`;
+    }).join('');
+    if (!rows) { el.innerHTML = wxState.loading ? '<p class="fineprint">正在讀取天氣預報</p>' : ''; return; }
+    const t = new Date(wxState.data.at).toLocaleString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+    el.innerHTML = `<div class="section-title"><h2>天氣與穿著</h2><small>${esc(t)} 更新</small></div>${rows}<p class="fineprint">模型預報，日期越遠越不準，出門前一天再看一次。山區數字依海拔估算。</p>`;
+  }
+  async function loadWeather(force) {
+    if (wxState.loading || navigator.onLine === false) return;
+    if (!force && wxState.data && Date.now() - wxState.data.at < WX_TTL) return;
+    wxState.loading = true;
+    try {
+      const places = {};
+      await Promise.all(Object.entries(WX_PLACES).map(async ([k, p]) => {
+        const q = new URLSearchParams({
+          latitude: p.lat, longitude: p.lng, timezone: 'Asia/Ho_Chi_Minh', start_date: TRIP.meta.start, end_date: TRIP.meta.end,
+          daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max',
+        });
+        if (p.elevation) q.set('elevation', p.elevation);
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?' + q.toString());
+        if (!res.ok) throw new Error('weather ' + res.status);
+        const D = (await res.json()).daily;
+        places[k] = {};
+        D.time.forEach((t, i) => {
+          if (D.temperature_2m_max[i] == null || D.temperature_2m_min[i] == null) return;
+          places[k][t] = { code: D.weather_code[i] ?? 3, max: D.temperature_2m_max[i], min: D.temperature_2m_min[i], rainMm: D.precipitation_sum[i] || 0, rainPct: D.precipitation_probability_max[i] || 0 };
+        });
+      }));
+      wxState.data = { at: Date.now(), places };
+      store.set('wx', wxState.data);
+    } catch (err) { /* 連不到時保留上次的預報 */ }
+    wxState.loading = false;
+    fillWeather();
+  }
+
   function renderItinerary() {
     const d = dayById(currentDay);
     const td = todayDay();
@@ -278,6 +344,7 @@
       <div class="col day">
         <div class="day-head"><h1>${esc(d.title)}</h1>${d.lead ? `<p class="lead">${esc(d.lead)}</p>` : ''}</div>
         ${facts ? `<div class="facts">${facts}</div>` : ''}
+        <section class="wx" id="wx" data-day="${esc(d.id)}" aria-live="polite"></section>
         ${callouts ? `<div class="callouts">${callouts}</div>` : ''}
         ${routeBtn}
         <ol class="tl">${items}</ol>
@@ -701,7 +768,7 @@
     const y = window.scrollY;
     app.innerHTML = VIEWS[view]();
     $$('.tabbar a').forEach((a) => a.setAttribute('aria-current', a.dataset.tab === view ? 'page' : 'false'));
-    if (view === 'itinerary') { const t = $('.tile[aria-pressed="true"]'); if (t) t.scrollIntoView({ block: 'nearest', inline: 'center' }); }
+    if (view === 'itinerary') { const t = $('.tile[aria-pressed="true"]'); if (t) t.scrollIntoView({ block: 'nearest', inline: 'center' }); fillWeather(); loadWeather(); }
     if (view === 'prep') { convFrom('vnd'); updateSyncUI(); updateInstallUI(); }
     if (view === 'book') expPreview();
     window.scrollTo(0, scrollTop ? 0 : y);

@@ -484,3 +484,13 @@ footer.foot { padding-block: 6px 30px; display: grid; gap: 6px; font-size: 12.5p
 .mini span { min-width: 0; }
 .minis { min-width: 0; }
 .ph-btn .ph.noimg::after { content: ""; }
+
+/* 天氣與穿著 */
+.wx { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.wx:empty { display: none; }
+.wx-row { display: grid; gap: 4px; padding: 12px 14px; border-radius: 14px; background: var(--paper-2); }
+.wx-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.wx-temp { font-family: var(--font-vn); font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
+.wx-sky { font-size: 14px; color: var(--ink-2); }
+.wx-wear { font-size: 14.5px; }
+.wx-wear span { color: var(--ink-2); font-size: 12.5px; margin-right: 8px; }
