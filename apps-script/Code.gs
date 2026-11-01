@@ -16,6 +16,8 @@
  *   失敗時回 { ok: false, error }；暫時性的錯誤（忙碌、服務逾時）另外帶 retry: true，網站會保留這筆稍後重送。
  *
  * 分頁名稱與欄位標題都是「中文 代號」，程式只認最後的英文代號。
+ *
+ * @OnlyCurrentDoc 只要求存取這份試算表的權限，碰不到 Drive 裡其他檔案
  */
 
 var TZ = 'Asia/Ho_Chi_Minh';
@@ -152,25 +154,31 @@ function setCheck_(id, done) {
   return { ok: true, id: id, done: done };
 }
 
+/** 外部傳來的文字一律存成純文字：開頭是 = + - @ 時加單引號，避免被試算表當公式執行 */
+function text_(v, max) {
+  var s = String(v === undefined || v === null ? '' : v).slice(0, max);
+  return /^[=+\-@\t\r\n]/.test(s) ? "'" + s : s;
+}
+
 function addExpense_(x) {
   var sh = sheetFor_('expenses');
   if (!sh) return { ok: false, error: '找不到「記帳 expenses」分頁' };
   var col = columns_(sh);
-  var id = String(x.expense_id || '').trim() || ('e' + Utilities.getUuid().slice(0, 8));
+  var id = String(x.expense_id || '').trim().slice(0, 64) || ('e' + Utilities.getUuid().slice(0, 8));
   if (findRow_(sh, col.expense_id, id)) return { ok: true, id: id, duplicate: true };
   var vnd = Number(x.amount_vnd) || '';
   var twd = Number(x.amount_twd) || '';
   if (!vnd && !twd) return { ok: false, error: '金額不能是空的' };
   var row = new Array(sh.getLastColumn()).fill('');
   var put = function (k, v) { if (col[k]) row[col[k] - 1] = v; };
-  put('expense_id', id);
-  put('date', String(x.date || Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd')));
-  put('item', String(x.item || '').slice(0, 200));
-  put('category', String(x.category || '其他'));
+  put('expense_id', text_(id, 64));
+  put('date', text_(x.date || Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'), 10));
+  put('item', text_(x.item, 200));
+  put('category', text_(x.category || '其他', 20));
   put('amount_vnd', vnd);
   put('amount_twd', twd);
-  put('paid_by', String(x.paid_by || '').slice(0, 50));
-  put('note', String(x.note || '').slice(0, 300));
+  put('paid_by', text_(x.paid_by, 50));
+  put('note', text_(x.note, 300));
   put('created_at', Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd HH:mm'));
   put('source', 'app');
   sh.appendRow(row);
