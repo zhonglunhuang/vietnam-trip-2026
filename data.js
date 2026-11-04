@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-04T19:15:22+07:00",
+ "generated": "2026-11-04T19:42:34+07:00",
  "tables": {
   "trip": [
    {
@@ -705,19 +705,19 @@ self.TRIP_DATA = {
     "item_id": "i1106-04",
     "day_id": "1106",
     "sort": "40",
-    "time": "晚上",
-    "end": "",
+    "time": "19:00",
+    "end": "21:30",
     "time_note": "",
     "type": "餐飲",
-    "title": "晚餐：Red Dzao House 或燒烤火鍋",
-    "desc": "Red Dzao House 是紅瑤族風格的高腳屋餐廳，在飯店附近的 Thác Bạc 路上；Trà Phương Quán 是燒烤火鍋。今天週五，也可以去沙壩夜市吃烤串。",
-    "tip": "Red Dzao House 週末建議提前一兩天訂位；Trà Phương Quán 10:00–24:00；夜市週五 16:00–22:00。",
-    "status": "建議",
+    "title": "晚餐：Sapa Xưa 自助餐，看民族歌舞表演",
+    "desc": "健行回飯店休息、洗澡，18:45 搭 Grab 過去（直線約 1.7 公里、5–10 分鐘）。仒照沙壩「愛情市集」蓋的餐廳，19:30 左右開始表演：西北歌謠、苗族笛和蘆笙、竹竿舞和篝火。",
+    "tip": "今天先打或 Zalo +84 868 686 386 訂位，問清楚週五有沒有自助餐和表演、每人多少；一位評論者寫每人約 100,000–200,000 VND，飲料和啤酒偏貴；戶外座位晚上冷，帶外套；回程在餐廳叫 Grab。",
+    "status": "待訂",
     "unverified": "TRUE",
     "place_ids": "",
-    "food_ids": "f-sapa-red-dzao, f-sapa-tra-phuong",
+    "food_ids": "f-sapa-xua",
     "photo": "",
-    "travel_mode": "步行"
+    "travel_mode": "開車"
    },
    {
     "item_id": "i1107-01",
@@ -1409,10 +1409,10 @@ self.TRIP_DATA = {
     "note_id": "n1106-04",
     "day_id": "1106",
     "sort": "40",
-    "kind": "資訊",
-    "label": "夜市",
-    "text": "今天是週五，沙壩夜市 16:00–22:00 有開。",
-    "status": ""
+    "kind": "待辦",
+    "label": "晚餐訂位",
+    "text": "19:00 Sapa Xưa：先打或 Zalo +84 868 686 386 訂位，確認週五有自助餐和表演（約 19:30 開始）。沙壩夜市週五 16:00–22:00 也有開。",
+    "status": "待訂"
    },
    {
     "note_id": "n1107-01",
@@ -4479,6 +4479,24 @@ self.TRIP_DATA = {
     "status": "建議",
     "unverified": "TRUE",
     "sources": "https://mia.vn/cam-nang-du-lich/diem-mat-goi-ten-nhung-quan-de-ngon-ninh-binh-nuc-tieng-2982\nhttps://bamozo.vn/quan-de-ngon-ninh-binh-khu-du-lich"
+   },
+   {
+    "food_id": "f-sapa-xua",
+    "region": "沙壩",
+    "name_zh": "Sapa Xưa（沙壩老市集餐廳）",
+    "name_vn": "Sapa Xưa (Chợ Tình Sapa)",
+    "dish": "西北山區菜、自助餐；晚上有民族歌舞表演",
+    "address": "005 Đường N2, Sa Pa, Lào Cai",
+    "maps_query": "Sapa Xưa (Chợ Tình Sapa), 005 Đường N2, Sa Pa",
+    "hours": "Google 地圖寫 24 小時營業；表演約 19:30 開始（2026 Google 評論）",
+    "price": "一位評論者寫每人約 100,000–200,000 VND，飲料和啤酒偏貴；自助餐價格未查到",
+    "michelin": "",
+    "note": "仒照沙壩「愛情市集」蓋的餐廳，戶外有茅草屋頂的餐桌。晚上有西北歌謠、苗族笛和蘆笙演奏、竹竿舞、篝火，客人可以下場跳。離飯店直線約 1.7 公里，搭 Grab 約 5–10 分鐘。電話 +84 868 686 386。",
+    "best_day": "11/6 晚餐",
+    "photo": "",
+    "status": "待訂",
+    "unverified": "TRUE",
+    "sources": "https://www.google.com/maps/place/Sapa+X%C6%B0a+(Ch%E1%BB%A3+T%C3%ACnh+Sapa)/@22.3390542,103.8513033,17z"
    }
   ],
   "dishes": [
