@@ -4,7 +4,7 @@
    照片：快取優先（檔案不會變）。安裝時預先存好所有 600px 照片，沙壩山區沒訊號也看得到；
      大螢幕會要 1200px 的版本，離線又沒存過時改給 600px 的那張。
    Google Sheet 的資料由網頁自己存在 localStorage，這裡不快取 Apps Script 的回應。 */
-const VERSION = 'v202611020054';
+const VERSION = 'v202611041858';
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const MAP_CACHE = 'map-tiles';
