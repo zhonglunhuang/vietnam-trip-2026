@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-04T18:58:13+07:00",
+ "generated": "2026-11-04T19:15:22+07:00",
  "tables": {
   "trip": [
    {
@@ -100,7 +100,7 @@ self.TRIP_DATA = {
     "region": "沙壩",
     "city": "沙壩",
     "title": "走進孟花河谷，從 Lao Chải 到 Tả Van",
-    "lead": "沿梯田一路往下，走到黑苗族的 Lao Chải 村與 Giáy 族的 Tả Van 村。11 月稻子已收割，梯田是收割後的土色線條，空氣乾爽、適合健行。全程約 10–12 公里、4–6 小時，終點搭車回鎮上。",
+    "lead": "跟 GetYourGuide 的 Eco Adventure 健行團，08:55 從石教堂出發，先上觀景山丘看 Fansipan，再沿梯田一路往下，經 Y Linh Hồ、黑苗族的 Lao Chải 走到 Giáy 族的 Tả Van。11 月稻子已收割，梯田是收割後的土色線條。全程約 10–12 公里，15:30 左右回到鎮上。",
     "cover_photo": "muong-hoa",
     "stay_id": "stay-sapagarden",
     "route_mode": "步行",
@@ -651,16 +651,16 @@ self.TRIP_DATA = {
     "item_id": "i1106-01",
     "day_id": "1106",
     "sort": "10",
-    "time": "上午",
-    "end": "",
+    "time": "08:55",
+    "end": "12:30",
     "time_note": "",
     "type": "步行",
-    "title": "和嚮導從鎮上走到 Lao Chải",
-    "desc": "Sapa Sisters 由在地苗族女性帶路，一日私人健行。從鎮上經 Ý Linh Hồ 下切到黑苗族的 Lao Chải 村，開頭是陡下坡，接著沿梯田邊的小徑走。",
-    "tip": "預訂期限未確認，請盡早寄 email 到 contact@sapasisters.com 預約，註明日期、人數、路線與回程車；每人 US$32–55，含午餐、山谷門票與回鎮交通；建議 08:30–09:30 出發；全程約 10–12 公里、4–6 小時；山谷門票說法不一（約 75,000 VND 或已免收），帶小鈔；雨後泥濘濕滑，穿防滑鞋、帶雨具；沿路婦女推銷有禮拒絕即可，不要給兒童錢或糖果。",
+    "title": "健行團：石教堂集合，經觀景山丘走到 Y Linh Hồ",
+    "desc": "GetYourGuide「Sapa: Eco Adventure Terraced Fields and Local Villages Trek」（Da Nang Happy Tour，4.9 分、1,456 則）。08:55 在石教堂前集合，先上小山丘觀景點遠看 Fansipan，再下到孟花河谷。約 11:00 到黑苗族的 Y Linh Hồ 村，過小橋沿梯田走到 Lao Chải Sang。11 月稻子已收割，梯田是收割後的土色線條。",
+    "tip": "選「Sapa Eco Trekking with Locals in a Small Group」08:55 場，686,000 VND／人（11/4 查的價格），小團約 10 人、英文嚴導；11/5 前才能免費取消；下訂時留 WhatsApp 號碼，嚴導會聯絡；飯店走到石教堂約 10 分鐘；全程 10–12 公里；雨後泥濘，穿防滑鞋、帶雨衣和保暖外套；沿路有婦女推銷，有禮拒絕即可。",
     "status": "待訂",
-    "unverified": "TRUE",
-    "place_ids": "sapa-sisters, lao-chai",
+    "unverified": "FALSE",
+    "place_ids": "stone-church, lao-chai",
     "food_ids": "",
     "photo": "",
     "travel_mode": "步行"
@@ -669,34 +669,34 @@ self.TRIP_DATA = {
     "item_id": "i1106-02",
     "day_id": "1106",
     "sort": "20",
-    "time": "中午",
-    "end": "",
+    "time": "12:30",
+    "end": "13:30",
     "time_note": "",
     "type": "餐飲",
-    "title": "午餐：村裡的農家",
-    "desc": "跟著嚮導在 Lao Chải 或 Tả Van 的民宿用餐，已含在嚮導費用裡。",
-    "tip": "",
-    "status": "建議",
+    "title": "午餐：Lao Chải Sang 的苗族人家",
+    "desc": "在苗族家庭吃家常菜，含在團費裡。",
+    "tip": "飲料自費；吃素或有忌口先跟嚴導說。",
+    "status": "",
     "unverified": "FALSE",
-    "place_ids": "",
+    "place_ids": "lao-chai",
     "food_ids": "",
     "photo": "",
-    "travel_mode": ""
+    "travel_mode": "步行"
    },
    {
     "item_id": "i1106-03",
     "day_id": "1106",
     "sort": "30",
-    "time": "下午",
-    "end": "",
+    "time": "13:30",
+    "end": "15:30",
     "time_note": "",
     "type": "步行",
-    "title": "沿孟花河走到 Tả Van，搭車回鎮上",
-    "desc": "最後一段比較平緩，可以看到河谷兩側的梯田線條。走到 Tả Van 後搭車回鎮上。",
-    "tip": "15:00 前走到 Tả Van；回鎮上約 12 公里、25–40 分鐘；跟嚮導確認回程車有沒有包含。",
-    "status": "建議",
+    "title": "Lao Chải 與 Tả Van，回到鎮上",
+    "desc": "午餐後到 Lao Chải 村，看苗族的日常生活和傳統衣物製作，再走到 Giáy 族的 Tả Van 村，約 15:30 回到沙壩鎮。",
+    "tip": "回程交通含在團費裡，下訂後跟嚴導確認回到哪裡下車；預報午後降雨機率高。",
+    "status": "",
     "unverified": "FALSE",
-    "place_ids": "ta-van",
+    "place_ids": "lao-chai, ta-van",
     "food_ids": "",
     "photo": "",
     "travel_mode": "步行"
@@ -1383,9 +1383,9 @@ self.TRIP_DATA = {
     "day_id": "1106",
     "sort": "10",
     "kind": "待辦",
-    "label": "預約嚮導",
-    "text": "寄 email 到 contact@sapasisters.com 預約（預訂期限未確認，越早越好），確認集合地點、時間與回程車。",
-    "status": ""
+    "label": "訂健行團",
+    "text": "在 GetYourGuide 訂「Sapa: Eco Adventure Terraced Fields and Local Villages Trek」，選 Small Group 08:55 場；11/5 前才能免費取消，下訂時留 WhatsApp 號碼。",
+    "status": "待訂"
    },
    {
     "note_id": "n1106-02",
@@ -1393,7 +1393,7 @@ self.TRIP_DATA = {
     "sort": "20",
     "kind": "重點",
     "label": "路線",
-    "text": "沙壩 → Ý Linh Hồ → Lao Chải → Tả Van，約 10–12 公里，淨下降約 500 公尺。",
+    "text": "石教堂 → 觀景山丘 → Y Linh Hồ → Lao Chải Sang → Lao Chải → Tả Van，約 10–12 公里，08:55–15:30。",
     "status": ""
    },
    {
@@ -1401,8 +1401,8 @@ self.TRIP_DATA = {
     "day_id": "1106",
     "sort": "30",
     "kind": "重點",
-    "label": "嚮導",
-    "text": "Sapa Sisters 一日私人健行每人 US$32–55（含午餐、門票、回程車）。",
+    "label": "團費",
+    "text": "686,000 VND／人，含英文嚴導、午餐、門票；飲料自費，小費隨意（11/4 GetYourGuide）。",
     "status": ""
    },
    {
@@ -1604,15 +1604,15 @@ self.TRIP_DATA = {
     "day_id": "1106",
     "sort": "10",
     "mode": "出遊",
-    "title": "Lao Chải–Tả Van 健行團",
-    "desc": "跟在地嚮導從 Ý Linh Hồ 走到 Lao Chải、Tả Van，含午餐與回程車。KKday 的中文團另含紅瑤草藥浴，11/8 就不用再泡。",
-    "book_by": "前 2 天（KKday 2 天前免費取消；Klook 24 小時前）",
-    "price": "NT$633–2,081／人",
-    "duration": "約 6 小時",
-    "links": "Klook 小團 NT$633 起（4.9 分、1.6K 則） | https://www.klook.com/zh-TW/activity/140519-y-linh-ho-lao-chai-ta-van-village-trekking-day-tour/\nKKday 中文導遊＋草藥浴 NT$2,081（兩人起） | https://www.kkday.com/zh-tw/product/147368-lao-chai-ta-van-village-private-day-tour-sapa-vietnam\nKKday 上午短程 NT$634 起（約 4 小時） | https://www.kkday.com/zh-tw/product/593963",
-    "place_ids": "lao-chai, ta-van",
+    "title": "Eco Adventure 梯田與村落健行團",
+    "desc": "08:55 石教堂集合，先上觀景山丘看 Fansipan，再經 Y Linh Hồ、Lao Chải Sang、Lao Chải 走到 Tả Van，含苗族人家午餐和門票，約 15:30 回鎮上。",
+    "book_by": "盡早；11/5 前才能免費取消",
+    "price": "686,000 VND／人",
+    "duration": "約 6.5 小時（08:55–15:30）",
+    "links": "GetYourGuide Eco Adventure（4.9 分、1,456 則） | https://www.getyourguide.com/sa-pa-l1049/sapa-eco-adventure-terrace-fields-and-local-villages-trek-t726894/\nGetYourGuide Dinh 苗族姊妹團（飯店接送、雨鞋與登山杖）589,000 VND | https://www.getyourguide.com/sa-pa-l1049/explore-sapa-by-trekkingadventures-mountainrice-fields-t736309/",
+    "place_ids": "stone-church, lao-chai, ta-van",
     "food_ids": "",
-    "tips": "Klook 團全程約 10–11 公里、下坡多；KKday 中文團只走約 4 公里比較輕鬆；雨後泥濘，穿防滑鞋、帶雨具；山谷門票通常已含在團費"
+    "tips": "小團約 10 人、英文嚴導；全程 10–12 公里、下坡多；雨後泥濘，穿防滑鞋、帶雨衣；前一天上過 Fansipan，累的話可以跟嚴導商量走短一點"
    },
    {
     "option_id": "o1107-01",
@@ -5071,9 +5071,9 @@ self.TRIP_DATA = {
     "item": "Fansipan",
     "status": "待訂",
     "per": "每人",
-    "low_vnd": "1,050,000",
-    "high_vnd": "1,370,000",
-    "note": "纜車＋火車 1,050,000；加山頂登山車 1,370,000"
+    "low_vnd": "1,380,000",
+    "high_vnd": "1,530,000",
+    "note": "官網全合一套餐 1,220,000（含自助午餐）＋峰頂登山車 150,000 起（單程或來回以現場為準）＋地方規費 10,000"
    },
    {
     "budget_id": "bd-ninhbinh-t",
@@ -5106,18 +5106,18 @@ self.TRIP_DATA = {
     "per": "每人",
     "low_vnd": "20,000",
     "high_vnd": "135,000",
-    "note": "銀瀑布 20,000；Lao Chải–Tả Van 山谷門票 0–75,000（Sapa Sisters 已含）；Tả Phìn 0–40,000；進天門觀景區另約 120,000"
+    "note": "銀瀑布 20,000；Lao Chải–Tả Van 山谷門票已含在健行團；Tả Phìn 0–40,000；進天門觀景區另約 120,000"
    },
    {
     "budget_id": "bd-guide",
     "sort": "110",
     "category": "門票",
-    "item": "健行嚮導",
+    "item": "健行團（11/6）",
     "status": "待訂",
     "per": "每人",
-    "low_vnd": "840,000",
-    "high_vnd": "1,450,000",
-    "note": "Sapa Sisters 每人 US$32–55"
+    "low_vnd": "686,000",
+    "high_vnd": "686,000",
+    "note": "GetYourGuide Eco Adventure 健行團 686,000／人，含午餐與門票"
    },
    {
     "budget_id": "bd-bath",
