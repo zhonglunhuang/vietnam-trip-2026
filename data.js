@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-06T00:53:15+07:00",
+ "generated": "2026-11-06T01:14:15+07:00",
  "tables": {
   "trip": [
    {
@@ -127,13 +127,13 @@ self.TRIP_DATA = {
     "weekday": "日",
     "region": "沙壩",
     "city": "沙壩",
-    "title": "紅瑤族的 Tả Phìn 與草藥浴，中午搭巴士回河內",
-    "lead": "早上退房、寄放行李，騎機車到 10–13 公里外的 Tả Phìn 看紅瑤族村落、泡傳統草藥浴，中午前回鎮上，13:00 左右搭白天巴士回河內，傍晚住進 Sao Mai。預報中午開始下雨。",
-    "cover_photo": "red-dao",
+    "title": "貓貓村與草藥浴，中午搭巴士回河內",
+    "lead": "早上退房、寄放行李，騎車 5 分鐘到飯店南邊的貓貓村（Cát Cát），沿步道走到谷底的瀑布。回鎮上泡紅瑤草藥浴、吃午餐，13:00 左右搭白天巴士回河內，傍晚住進 Sao Mai。預報中午開始下雨。",
+    "cover_photo": "cat-cat",
     "stay_id": "stay-hanoi2",
     "route_mode": "開車",
-    "route_stops": "hotel-sapagarden, ta-phin",
-    "plan_b": "下雨或霧大就不騎車去 Tả Phìn，改在鎮上 SPA 泡藥浴、按摩，再去搭巴士。"
+    "route_stops": "hotel-sapagarden, cat-cat",
+    "plan_b": "下雨或太累就不去貓貓村，在鎮上 SPA 泡藥浴、按摩，再去搭巴士。"
    },
    {
     "day_id": "1109",
@@ -868,15 +868,15 @@ self.TRIP_DATA = {
     "day_id": "1108",
     "sort": "20",
     "time": "08:00",
-    "end": "10:00",
+    "end": "10:30",
     "time_note": "",
     "type": "景點",
-    "title": "騎機車到 Tả Phìn 紅瑤族村",
-    "desc": "從鎮上往東北約 10–13 公里，騎車約 25–40 分鐘。紅瑤族和黑苗族的村落，紅色頭巾很好認，可以看梯田和刺繡攤。",
-    "tip": "村子門票成人約 40,000 VND（也有網站寫免費，以現場為準）；村裡沒有 ATM，帶現金；山路彎、早上霧大，慢騎、開大燈、戴安全帽；拍人像先徵求同意。",
+    "title": "貓貓村（Cát Cát）",
+    "desc": "在飯店南邊直線約 1 公里，騎車約 5 分鐘到村口。沿步道一路往下，經過黑苗族木屋、織染工坊、水車和吊橋，谷底是仙沙瀑布。早上人比較少。",
+    "tip": "成人約 150,000 VND（2026 多個旅遊網站；也有寫 100,000），以現場售票口為準；多數網站寫 07:00–18:00；下去約 30–45 分鐘，回程是陡上坡加石階，走不動可以搭機車計程車（xe ôm）約 20,000–50,000 VND；騎車去就停在村口。",
     "status": "建議",
-    "unverified": "FALSE",
-    "place_ids": "ta-phin",
+    "unverified": "TRUE",
+    "place_ids": "cat-cat",
     "food_ids": "",
     "photo": "",
     "travel_mode": "開車"
@@ -885,19 +885,19 @@ self.TRIP_DATA = {
     "item_id": "i1108-03",
     "day_id": "1108",
     "sort": "30",
-    "time": "10:00",
-    "end": "11:00",
+    "time": "10:45",
+    "end": "11:30",
     "time_note": "",
     "type": "放鬆",
-    "title": "紅瑤族草藥浴",
-    "desc": "用數十種山上草藥熬成的熱水浴。泡完在店裡休息一下，11:00 左右騎回鎮上。",
-    "tip": "價格和營業時間要現場確認；村裡約 80,000–200,000 VND，鎮上 SPA 約 150,000–300,000 VND；水溫約 35°C、泡 15–25 分鐘；孕婦、心臟病、高血壓或皮膚敏感的人先詢問；不要空腹、飽餐或喝酒後泡；泡完頭會暈的話多休息再騎車。",
+    "title": "鎮上泡紅瑤草藥浴",
+    "desc": "回到鎮上找家 SPA 泡紅瑤草藥浴，飯店同一條路上就有 Eden（Thác Bạc 店）。不想泡就直接回飯店休息。",
+    "tip": "紅瑤藥浴 30 分約 150,000–380,000 VND；Eden 09:00–23:00；多數可以直接走進去；剛吃飽或喝過酒不要泡；孕婦、心臟病、高血壓先詢問。",
     "status": "建議",
-    "unverified": "TRUE",
-    "place_ids": "ta-phin-herbal-bath",
+    "unverified": "FALSE",
+    "place_ids": "spa-sp-eden-thacbac, spa-sp-eden-central",
     "food_ids": "",
     "photo": "",
-    "travel_mode": "開車"
+    "travel_mode": "步行"
    },
    {
     "item_id": "i1108-04",
@@ -907,8 +907,8 @@ self.TRIP_DATA = {
     "end": "12:30",
     "time_note": "",
     "type": "餐飲",
-    "title": "還車、拿行李，吃午餐",
-    "desc": "回鎮上還機車、到飯店拿行李。午餐吃 A Quỳnh 的苗族燉湯或 A Phủ 的山地菜，吃完去搭巴士。",
+    "title": "拿行李，吃午餐",
+    "desc": "到飯店拿行李，機車是租的話順便還車。午餐吃 A Quỳnh 的苗族燉湯或 A Phủ 的山地菜，吃完去搭巴士。",
     "tip": "預報 12 點開始下雨，帶雨衣；A Phủ 09:00–23:00。",
     "status": "建議",
     "unverified": "TRUE",
@@ -1652,15 +1652,15 @@ self.TRIP_DATA = {
     "day_id": "1108",
     "sort": "10",
     "mode": "出遊",
-    "title": "騎機車去 Tả Phìn 泡紅瑤藥浴",
-    "desc": "08:00 退房寄放行李後出發，騎車 25–40 分鐘到村裡，逛村子、泡藥浴，11:00 左右回鎮上趕中午的巴士。",
+    "title": "貓貓村半日＋鎮上藥浴",
+    "desc": "08:00 退房寄放行李後出發，騎車 5 分鐘到貓貓村，走到谷底瀑布再回來；10:45 回鎮上泡紅瑤草藥浴，吃完午餐搭 13:00 的巴士。",
     "book_by": "不用預訂",
-    "price": "門票約 40,000 VND＋藥浴 80,000–200,000 VND",
-    "duration": "約 3 小時（08:00–11:00）",
+    "price": "門票約 150,000＋藥浴 150,000–380,000 VND",
+    "duration": "約 3.5 小時（08:00–11:30）",
     "links": "",
-    "place_ids": "ta-phin, ta-phin-herbal-bath",
+    "place_ids": "cat-cat, spa-sp-eden-thacbac",
     "food_ids": "",
-    "tips": "村裡沒有 ATM，帶現金；藥浴水溫約 35°C、泡 15–25 分鐘，孕婦、心臟病、高血壓先詢問；泡完頭暈就多休息再騎車；山路霧大慢騎、開大燈"
+    "tips": "貓貓村回程是陡上坡加石階，走不動搭 xe ôm 約 20,000–50,000 VND；藥浴水溫約 35°C、泡 15–25 分鐘，孕婦、心臟病、高血壓先詢問"
    },
    {
     "option_id": "o1110-01",
@@ -3319,9 +3319,9 @@ self.TRIP_DATA = {
     "photo": "cat-cat",
     "status": "",
     "unverified": "TRUE",
-    "used_on": "",
+    "used_on": "11/8",
     "sources": "https://sunworld.vn/vi/fansipan/an-choi/ban-cat-cat\nhttps://www.flysapa.com/post/ban-cat-cat-sapa\nhttps://sinhtour.vn/gia-ve-tham-quan-ban-cat-cat/\nhttps://nominatim.openstreetmap.org/search?q=Cát+Cát&format=json&countrycodes=vn",
-    "hidden": "TRUE"
+    "hidden": "FALSE"
    },
    {
     "place_id": "love-falls",
