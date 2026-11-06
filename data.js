@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-06T01:14:15+07:00",
+ "generated": "2026-11-06T22:25:41+07:00",
  "tables": {
   "trip": [
    {
@@ -114,12 +114,12 @@ self.TRIP_DATA = {
     "region": "沙壩",
     "city": "沙壩",
     "title": "騎機車：Ô Quy Hồ、銀瀑布、彩虹滑道與高山滑車",
-    "lead": "上午趥最晴先往西騎到最遠的 Ô Quy Hồ 山口，回程順路看銀瀑布，午餐路上看到什麼吃什麼。下午山上起霧，穿過鎮上去北邊的彩虹滑道、南邊的高山滑車，晚上逛週六夜市和愛情市集。",
+    "lead": "上午趁最晴先往西騎到最遠的 Ô Quy Hồ 山口，回程順路看銀瀑布，午餐路上看到什麼吃什麼。下午山上起霧，穿過鎮上去北邊的彩虹滑道、南邊的高山滑車，晚上逛週六夜市和愛情市集。",
     "cover_photo": "o-quy-ho",
     "stay_id": "stay-sapagarden",
     "route_mode": "開車",
     "route_stops": "o-quy-ho, silver-falls, sapa-green-valley, ban-mong-coaster",
-    "plan_b": "雲霧太濃或下雨就不上山口，看完銀瀑布直接回鎮上，或改在鎮上按摩、喝咖啡。"
+    "plan_b": "早上還在下雨：晚 30–60 分鐘出發，10:00 後雨會停。整天大雨或山口濃霧：不上山口、不玩滑道和滑車（雨天濕滑、可能暫停），改走「下雨／不想騎車」那一套：沙壩博物館、沙壩市場買紀念品、藥浴按摩、咖啡廳，晚上照樣逛夜市。"
    },
    {
     "day_id": "1108",
@@ -746,7 +746,7 @@ self.TRIP_DATA = {
     "time_note": "",
     "type": "登山",
     "title": "先騎到最遠的 Ô Quy Hồ 山口與天門觀景區",
-    "desc": "沿 4D 國道往西北，經過銀瀑布先不停，直接騎到約 1,991 公尺的山口，趥一天最晴的時候看黃連山脈和 Fansipan，有時會有雲海。在天門（Cổng Trời）觀景區看景、喝杯熱飲。",
+    "desc": "沿 4D 國道往西北，經過銀瀑布先不停，直接騎到約 1,991 公尺的山口，趁一天最晴的時候看黃連山脈和 Fansipan，有時會有雲海。在天門（Cổng Trời）觀景區看景、喝杯熱飲。",
     "tip": "進天門觀景區成人約 120,000 VND（含一杯飲料），約 07:00–18:00（非官方）；山口比鎮上冷 5–7°C，帶厚外套和雨衣；長上坡加連續彎道，有大車和觀光巴士，起霧開大燈慢騎。",
     "status": "建議",
     "unverified": "TRUE",
@@ -1447,7 +1447,7 @@ self.TRIP_DATA = {
     "sort": "20",
     "kind": "重點",
     "label": "天氣",
-    "text": "11/6 預報：7–9 點有霧，10:00–13:00 最晴（能見度 12–28 公里），14:00 後能見度降到 2–3 公里。",
+    "text": "11/6 晚上更新的預報：06–09 點小雨、能見度 3–6 公里；10:00–15:00 停雨，能見度 11–28 公里，最適合上山口；16:00 後起濃霧，能見度不到 2 公里，天黑前回到鎮上。氣溫 16–21°C。",
     "status": ""
    },
    {
@@ -1583,6 +1583,33 @@ self.TRIP_DATA = {
     "kind": "提醒",
     "label": "不能帶回台灣",
     "text": "豬肉製品（含夾肉法國麵包、肉鬆、香腸）違規罰新台幣 20 萬元起；新鮮水果也不能帶。",
+    "status": ""
+   },
+   {
+    "note_id": "n1107-04",
+    "day_id": "1107",
+    "sort": "40",
+    "kind": "提醒",
+    "label": "下雨備案",
+    "text": "小雨：晚點出發，穿雨衣照常騎。大雨或山口濃霧：不上山口、不玩滑道和滑車，改走下方「下雨／不想騎車」：博物館 → 沙壩市場 → 藥浴 → 咖啡廳 → 夜市。下午雨停了還是可以騎去高山滑車。",
+    "status": ""
+   },
+   {
+    "note_id": "n1107-05",
+    "day_id": "1107",
+    "sort": "50",
+    "kind": "資訊",
+    "label": "紀念品",
+    "text": "沙壩就買織品（小包、巾帶約 50,000–500,000 VND）、銀飾、山茶 Shan Tuyết、蜂蜜；比價去沙壩市場和今晚夜市，咖啡和零食留到河內超市買比較便宜。",
+    "status": ""
+   },
+   {
+    "note_id": "n1109-04",
+    "day_id": "1109",
+    "sort": "40",
+    "kind": "資訊",
+    "label": "紀念品",
+    "text": "咖啡、茶、綠豆糕、果乾去 WinMart 等超市買，有標價不用殺價；磁鐵、小燈籠、T 恤去同春市場或馬媸街一帶，從開價的 6–7 成開始談。週一二沒有週末夜市。",
     "status": ""
    }
   ],
@@ -1757,15 +1784,15 @@ self.TRIP_DATA = {
     "day_id": "1107",
     "sort": "20",
     "mode": "放鬆",
-    "title": "不出門，鎮上慢慢逛",
-    "desc": "不想騎車就留在鎮上：上午按摩、下午喝咖啡，晚上逛週六夜市和愛情市集。",
+    "title": "下雨／不想騎車：鎮上室內行程",
+    "desc": "全部走路就到：上午去沙壩博物館（免費，看少數民族服飾和歷史），旁邊逛石頭教堂；中午到沙壩市場吃東西、買紀念品；下午泡紅瑤藥浴或按摩，找間咖啡廳等雨停；晚上逛週六夜市和愛情市集。",
     "book_by": "可以直接走進去",
-    "price": "約 300,000–900,000 VND",
-    "duration": "半天",
+    "price": "約 300,000–900,000 VND（不含購物）",
+    "duration": "整天",
     "links": "Klook Eden Central（買完要在 App 預約時段） | https://www.klook.com/activity/124139-eden-central-massage-and-spa-sapa/",
-    "place_ids": "spa-sp-eden-thacbac, spa-sp-eden-central, spa-sp-halosa, spa-sp-relax",
+    "place_ids": "sapa-museum, stone-church, sapa-market, spa-sp-eden-thacbac, spa-sp-eden-central, sapa-night-market",
     "food_ids": "f-sapa-a-phu, f-sapa-moment-romantic, f-sapa-grill-stalls",
-    "tips": "多數可以直接走進去，營業到 23:00 前後；紅瑤藥浴 30 分約 150,000–380,000 VND；剛吃飽或喝過酒不要泡藥浴；小費不強制，約 50,000–100,000 VND"
+    "tips": "博物館約 07:30–11:30、13:30–17:00（舊資料，以現場為準）；藥浴 30 分約 150,000–380,000 VND，剛吃飽或喝過酒不要泡；小費不強制，約 50,000–100,000 VND；雨停了下午還是可以騎去 Bản Mòng 高山滑車，出發前先打電話問有沒有開"
    },
    {
     "option_id": "o1108-02",
@@ -2187,7 +2214,7 @@ self.TRIP_DATA = {
     "unverified": "TRUE",
     "used_on": "",
     "sources": "https://vinpearl.com/vi/cho-dong-xuan-ha-noi-co-gi-thu-vi-top-trai-nghiem-hap-dan-nhat-2023\nhttps://mia.vn/cam-nang-du-lich/cho-dong-xuan-khu-cho-noi-tieng-va-sam-uat-nhat-thanh-pho-thu-do-2634",
-    "hidden": "TRUE"
+    "hidden": "FALSE"
    },
    {
     "place_id": "ma-may-87",
@@ -3762,6 +3789,48 @@ self.TRIP_DATA = {
     "unverified": "TRUE",
     "used_on": "11/7",
     "sources": "https://banmong.vn\nhttps://asiamystika.com/blog/alpine-coaster-sapa",
+    "hidden": "FALSE"
+   },
+   {
+    "place_id": "sapa-museum",
+    "region": "沙壩",
+    "category": "museum",
+    "name_zh": "沙壩博物館",
+    "name_vn": "Bảo tàng Sa Pa",
+    "address": "2 đường Fansipan, phường Sa Pa, tỉnh Lào Cai（旅遊資訊中心園區內）",
+    "maps_query": "Bảo tàng Sa Pa, Fansipan, Sa Pa",
+    "lat": "",
+    "lng": "",
+    "hours": "約 07:30–11:30、13:30–17:00（舊資料，以現場為準）",
+    "price": "免費（2025 Sun Paradise Land）",
+    "summary": "小型博物館，2 樓展出 200 多件苗族、紅瑤等少數民族的服飾、農具和沙壩歷史。下雨天可以先來這裡，約 30–45 分鐘。",
+    "tips": "午休時間可能不開；一樓有賣織品和紀念品。離石頭教堂走路幾分鐘。",
+    "photo": "",
+    "status": "",
+    "unverified": "TRUE",
+    "used_on": "",
+    "sources": "https://sunparadiseland.com/SunParadiseLandSaPa/tin-tuc/bao-tang-sa-pa-2025-diem-den-mien-phi-luu-giu-van-hoa-vung-cao-12321\nhttps://mia.vn/cam-nang-du-lich/ghe-tham-bao-tang-sapa-20150",
+    "hidden": "FALSE"
+   },
+   {
+    "place_id": "sapa-market",
+    "region": "沙壩",
+    "category": "市集",
+    "name_zh": "沙壩市場（中央市場）",
+    "name_vn": "Chợ Sa Pa",
+    "address": "沙壩鎮中心（出發前用地圖確認）",
+    "maps_query": "Chợ Sa Pa, Lào Cai",
+    "lat": "",
+    "lng": "",
+    "hours": "每天白天，大約早上到傍晚（查無官方時間）",
+    "price": "免費進入",
+    "summary": "有屋頂的市場，賣蔬果、山產、茶葉、蜂蜜、織品和銀飾，也有小吃攤。下雨天可以逃進來買紀念品。",
+    "tips": "沒標價就要殺價，從開價的 6–7 成開始談；量多一起買比較好談；只收現金。煙燻水牛肉不能帶回台灣。",
+    "photo": "",
+    "status": "",
+    "unverified": "TRUE",
+    "used_on": "",
+    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs\nhttps://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946",
     "hidden": "FALSE"
    }
   ],
@@ -5967,6 +6036,41 @@ self.TRIP_DATA = {
     "section": "急難與就醫",
     "sort": "1,203",
     "text": "護照遺失時，先到當地警局報案拿證明，再到辦事處申請入國證明書回台；護照影本和 2 吋照片 2 張另外收好。",
+    "sources": ""
+   },
+   {
+    "tip_id": "t13-01",
+    "section": "購物與紀念品",
+    "sort": "1,300",
+    "text": "沙壩市場、夜市、路邊攤沒標價，從開價的 6–7 成開始談，一次買多件比較好談；有標價的店和超市不用殺價。手工織品很費工，不要硬殺到最低。",
+    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
+   },
+   {
+    "tip_id": "t13-02",
+    "section": "購物與紀念品",
+    "sort": "1,301",
+    "text": "沙壩可買：苗族、紅瑤織品和刺繡（小件約 50,000–500,000 VND）、銀飾（約 100,000–1,000,000 VND）、Shan Tuyết 古樹茶、茶葉香料（一包約 20,000–100,000 VND）、山蜂蜜（一罐約 50,000–200,000 VND）。價格為 2025 年旅遊指南，以現場為準。",
+    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
+   },
+   {
+    "tip_id": "t13-03",
+    "section": "購物與紀念品",
+    "sort": "1,302",
+    "text": "沙壩比價：沙壩市場和週末夜市最便宜；Sapa O'Chau 等社會企業和 Lan Rừng 等品牌店有標價、品質穩，但較貴。入口登山鞋、外套多半是仿冒品。",
+    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
+   },
+   {
+    "tip_id": "t13-04",
+    "section": "購物與紀念品",
+    "sort": "1,303",
+    "text": "河內可買：咖啡（Trung Nguyên、G7）、蓮花茶、綠豆糕、釃梅（ô mai）、果乾、絲巾。咖啡、茶、零食去 WinMart 等超市買最省事；磁鐵、小燈籠、T 恤去同春市場或馬媸街（Mã Mây），比觀光店便宜。絲織品在行絲街（Hàng Gai），多半標價。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "tip_id": "t13-05",
+    "section": "購物與紀念品",
+    "sort": "1,304",
+    "text": "不要買回台灣：煙燻水牛肉等肉製品、新鮮水果。藥浴草包、高麗參等乾燥植物可能要檢疫，入境時申報或不要買；酒類每人免稅 1 公升。",
     "sources": ""
    }
   ],
