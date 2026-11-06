@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-06T22:25:41+07:00",
+ "generated": "2026-11-06T22:41:54+07:00",
  "tables": {
   "trip": [
    {
@@ -1610,6 +1610,15 @@ self.TRIP_DATA = {
     "kind": "資訊",
     "label": "紀念品",
     "text": "咖啡、茶、綠豆糕、果乾去 WinMart 等超市買，有標價不用殺價；磁鐵、小燈籠、T 恤去同春市場或馬媸街一帶，從開價的 6–7 成開始談。週一二沒有週末夜市。",
+    "status": ""
+   },
+   {
+    "note_id": "n1108-04",
+    "day_id": "1108",
+    "sort": "40",
+    "kind": "資訊",
+    "label": "紀念品",
+    "text": "沙壩最後的購物機會：貓貓村步道上有織品攤；11:30 拿行李前可以去沙壩市場或 Sun Plaza 補買茶、蜂蜜。巴士行李空間有限，易碎的酒瓶包好放手提。",
     "status": ""
    }
   ],
@@ -3818,7 +3827,7 @@ self.TRIP_DATA = {
     "category": "市集",
     "name_zh": "沙壩市場（中央市場）",
     "name_vn": "Chợ Sa Pa",
-    "address": "沙壩鎮中心（出發前用地圖確認）",
+    "address": "Cầu Mây 和 Xuân Viên 路一帶（Sun Paradise Land 寫法，出發前用地圖確認）",
     "maps_query": "Chợ Sa Pa, Lào Cai",
     "lat": "",
     "lng": "",
@@ -6049,8 +6058,8 @@ self.TRIP_DATA = {
     "tip_id": "t13-02",
     "section": "購物與紀念品",
     "sort": "1,301",
-    "text": "沙壩可買：苗族、紅瑤織品和刺繡（小件約 50,000–500,000 VND）、銀飾（約 100,000–1,000,000 VND）、Shan Tuyết 古樹茶、茶葉香料（一包約 20,000–100,000 VND）、山蜂蜜（一罐約 50,000–200,000 VND）。價格為 2025 年旅遊指南，以現場為準。",
-    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
+    "text": "沙壩手工藝品：苗族、紅瑤織品圍巾約 200,000–500,000 VND、包包約 150,000–800,000 VND、零錢包和鑰匙圈比較便宜；穿民族服裝的娃娃鑰匙圈約 20,000–50,000 VND；小幅織布畫約 30,000–100,000 VND；苗族銀飾約 100,000–2,000,000 VND，買前問純度。價格為 2025 年旅遊網站資料，以現場為準。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
    },
    {
     "tip_id": "t13-03",
@@ -6072,6 +6081,20 @@ self.TRIP_DATA = {
     "sort": "1,304",
     "text": "不要買回台灣：煙燻水牛肉等肉製品、新鮮水果。藥浴草包、高麗參等乾燥植物可能要檢疫，入境時申報或不要買；酒類每人免稅 1 公升。",
     "sources": ""
+   },
+   {
+    "tip_id": "t13-06",
+    "section": "購物與紀念品",
+    "sort": "1,305",
+    "text": "沙壩吃的特產：Shan Tuyết 古樹雪茶、山蜂蜜（約 200,000–400,000 VND／公升）、山楂（táo mèo）果醬和糖果、Mắc Khén 等山區香料（約 50,000–200,000 VND）。山楂酒、San Lùng 米酒一瓶約 150,000–300,000 VND，回台灣每人免稅 1 公升。筍乾、香菇等乾貨要先確認能不能帶回台灣（未查證），不確定就入境時申報。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "tip_id": "t13-07",
+    "section": "購物與紀念品",
+    "sort": "1,306",
+    "text": "沙壩去哪買：要便宜去沙壩市場（Cầu Mây 和 Xuân Viên 路一帶）和週五到週日的夜市，比較幾攤再買；要有標價、包裝好送人，去 Sun Plaza 或鎮上的特產超市（如 Sa Pa Mart）；織品也可以在貓貓村、Tả Van 的攤位直接跟村民買。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
    }
   ],
   "contacts": [
