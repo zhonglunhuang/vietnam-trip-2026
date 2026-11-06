@@ -22,7 +22,7 @@
 
 var TZ = 'Asia/Ho_Chi_Minh';
 var CONTENT = ['trip', 'days', 'items', 'day_notes', 'options', 'places', 'food', 'dishes', 'bookings', 'stays',
-  'budget', 'expenses', 'checklist', 'tips', 'contacts', 'phrases', 'photos'];
+  'budget', 'expenses', 'checklist', 'tips', 'gifts', 'contacts', 'phrases', 'photos'];
 /** 不經寫入密碼就能讀到的資料表：記帳只能用 POST expenses.list（要密碼）讀 */
 var PRIVATE = ['expenses'];
 var PUBLIC = CONTENT.filter(function (k) { return PRIVATE.indexOf(k) < 0; });

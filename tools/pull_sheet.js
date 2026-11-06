@@ -25,6 +25,8 @@ const overview = self.TRIP_DATA.overview;
   if (!j.tables || !Array.isArray(j.tables.days) || !j.tables.days.length) throw new Error('試算表的「每日 days」分頁是空的或找不到，沒有更新 data.js');
   // 私人資料不進公開檔案（舊版 Apps Script 的 GET 仍會回傳記帳）
   j.tables.expenses = [];
+  // 舊版 Apps Script 沒有紀念品分頁：保留目前 data.js 裡的內容
+  if (!Array.isArray(j.tables.gifts)) j.tables.gifts = self.TRIP_DATA.tables.gifts || [];
   for (const r of j.tables.checklist || []) { r.done = false; r.done_at = ''; }
   const S = require(path.join(ROOT, 'sheet.js'));
   const problems = S.checkTables(j.tables);

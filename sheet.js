@@ -23,6 +23,7 @@
     category: { transport: '交通', stay: '住宿', ticket: '門票', food: '餐飲', shopping: '購物', other: '其他' },
     focal: { center: '置中', top: '偏上', bottom: '偏下' },
     choice: { active: '出遊', relax: '放鬆' },
+    carry: { ok: '可帶回', limit: '有限額', declare: '要申報', no: '不能帶' },
   };
 
   /* ---------- 資料表與欄位 ----------
@@ -94,6 +95,11 @@
     ] },
     { key: 'tips', label: '注意事項', id: 'tip_id', note: '同一個 section 的列會合成一組。', cols: [
       ['tip_id', '代號'], ['section', '主題'], ['sort', '排序', 'num'], ['text', '內容'], ['sources', '資料來源', 'lines'],
+    ] },
+    { key: 'gifts', label: '紀念品', id: 'gift_id', note: '「伴手禮」分頁的內容。group 相同的列排在一起；where 寫去哪買，place_ids 指到地點分頁的店家或市場；carry 是能不能帶回台灣。', cols: [
+      ['gift_id', '代號'], ['region', '地區', 'enum:region'], ['sort', '排序', 'num'], ['group', '分類'], ['name_zh', '中文'],
+      ['name_vn', '越南文'], ['price', '參考價'], ['where', '去哪買'], ['place_ids', '地點', 'list'], ['carry', '帶回台灣', 'enum:carry'],
+      ['note', '挑選提醒'], ['sources', '資料來源', 'lines'],
     ] },
     { key: 'contacts', label: '緊急聯絡', id: 'contact_id', note: '', cols: [
       ['contact_id', '代號'], ['name', '名稱'], ['number', '電話'], ['note', '說明'], ['unverified', '資訊未確認', 'bool'],
@@ -261,6 +267,10 @@
       })),
       checklist: groups,
       tips,
+      gifts: T.gifts.slice().sort(bySort).map((g) => ({
+        id: g.gift_id, region: g.region, group: g.group, name: g.name_zh, vn: g.name_vn, price: g.price, where: g.where,
+        places: g.place_ids, carry: g.carry, note: g.note, src: g.sources,
+      })),
       contacts: T.contacts.map((c) => ({ id: c.contact_id, name: c.name, num: c.number, note: c.note, unverified: c.unverified })),
       phrases: T.phrases.map((p) => ({ id: p.phrase_id, vn: p.vn, zh: p.zh })),
     });
@@ -297,6 +307,7 @@
     for (const f of T.food) need(photos, f.photo, `餐廳 ${f.food_id} 照片`);
     for (const d of T.dishes) need(photos, d.photo, `必吃 ${d.dish_id} 照片`);
     for (const b of T.bookings) need(places, b.place_id, `訂位 ${b.booking_id} 地點`);
+    for (const g of T.gifts) g.place_ids.forEach((p) => need(places, p, `紀念品 ${g.gift_id} 地點`));
     for (const s of T.stays) { need(places, s.place_id, `住宿 ${s.stay_id} 地點`); need(photos, s.photo, `住宿 ${s.stay_id} 照片`); }
     return problems;
   }

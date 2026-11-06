@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-06T22:41:54+07:00",
+ "generated": "2026-11-06T22:55:27+07:00",
  "tables": {
   "trip": [
    {
@@ -1600,7 +1600,7 @@ self.TRIP_DATA = {
     "sort": "50",
     "kind": "資訊",
     "label": "紀念品",
-    "text": "沙壩就買織品（小包、巾帶約 50,000–500,000 VND）、銀飾、山茶 Shan Tuyết、蜂蜜；比價去沙壩市場和今晚夜市，咖啡和零食留到河內超市買比較便宜。",
+    "text": "織品、銀飾、Shan Tuyết 茶、蜂蜜在沙壩買，去沙壩市場和今晚夜市比價；咖啡和零食留到河內超市買。清單和價格詳見「伴手禮」分頁。",
     "status": ""
    },
    {
@@ -1609,7 +1609,7 @@ self.TRIP_DATA = {
     "sort": "40",
     "kind": "資訊",
     "label": "紀念品",
-    "text": "咖啡、茶、綠豆糕、果乾去 WinMart 等超市買，有標價不用殺價；磁鐵、小燈籠、T 恤去同春市場或馬媸街一帶，從開價的 6–7 成開始談。週一二沒有週末夜市。",
+    "text": "咖啡、茶、綠豆糕、果乾去 WinMart 等超市買，有標價不用殺價；磁鐵、小燈籠、T 恤去同春市場或馬梅街一帶。週一、週二沒有週末夜市。清單詳見「伴手禮」分頁。",
     "status": ""
    },
    {
@@ -3841,6 +3841,48 @@ self.TRIP_DATA = {
     "used_on": "",
     "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs\nhttps://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946",
     "hidden": "FALSE"
+   },
+   {
+    "place_id": "hn-winmart",
+    "region": "河內",
+    "category": "購物",
+    "name_zh": "WinMart 超市（老城區附近）",
+    "name_vn": "WinMart / WinMart+",
+    "address": "",
+    "maps_query": "WinMart Hoàn Kiếm, Hà Nội",
+    "lat": "",
+    "lng": "",
+    "hours": "多數 06:00–22:00 前後（各店不同）",
+    "price": "",
+    "summary": "越南最常見的連鎖超市，咖啡、茶、綠豆糕、果乾都有標價，不用殺價。老城區附近有好幾家小型 WinMart+，用地圖搜最近的一家。",
+    "tips": "大包裝咖啡、零食比觀光店便宜；可以刷卡。",
+    "photo": "",
+    "status": "",
+    "unverified": "TRUE",
+    "used_on": "",
+    "sources": "",
+    "hidden": "FALSE"
+   },
+   {
+    "place_id": "hang-gai",
+    "region": "河內",
+    "category": "購物",
+    "name_zh": "行絲街",
+    "name_vn": "Phố Hàng Gai",
+    "address": "Phố Hàng Gai, Hoàn Kiếm, Hà Nội",
+    "maps_query": "Phố Hàng Gai, Hoàn Kiếm, Hà Nội",
+    "lat": "",
+    "lng": "",
+    "hours": "店家多半 08:00–21:00 前後",
+    "price": "",
+    "summary": "老城區賣絲巾、刺繡和絲織品的街，在還劍湖西北邊，多半標價。",
+    "tips": "有標價的店不用殺價；走路從還劍湖約 5 分鐘。",
+    "photo": "",
+    "status": "",
+    "unverified": "TRUE",
+    "used_on": "",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/",
+    "hidden": "FALSE"
    }
   ],
   "food": [
@@ -6051,29 +6093,8 @@ self.TRIP_DATA = {
     "tip_id": "t13-01",
     "section": "購物與紀念品",
     "sort": "1,300",
-    "text": "沙壩市場、夜市、路邊攤沒標價，從開價的 6–7 成開始談，一次買多件比較好談；有標價的店和超市不用殺價。手工織品很費工，不要硬殺到最低。",
+    "text": "市場、夜市、路邊攤沒標價，從開價的 6–7 成開始談，一次買多件比較好談；有標價的店和超市不用殺價。手工織品很費工，不要硬殺到最低。小攤只收現金。",
     "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
-   },
-   {
-    "tip_id": "t13-02",
-    "section": "購物與紀念品",
-    "sort": "1,301",
-    "text": "沙壩手工藝品：苗族、紅瑤織品圍巾約 200,000–500,000 VND、包包約 150,000–800,000 VND、零錢包和鑰匙圈比較便宜；穿民族服裝的娃娃鑰匙圈約 20,000–50,000 VND；小幅織布畫約 30,000–100,000 VND；苗族銀飾約 100,000–2,000,000 VND，買前問純度。價格為 2025 年旅遊網站資料，以現場為準。",
-    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
-   },
-   {
-    "tip_id": "t13-03",
-    "section": "購物與紀念品",
-    "sort": "1,302",
-    "text": "沙壩比價：沙壩市場和週末夜市最便宜；Sapa O'Chau 等社會企業和 Lan Rừng 等品牌店有標價、品質穩，但較貴。入口登山鞋、外套多半是仿冒品。",
-    "sources": "https://localvietnam.com/blog/shopping-sapa-souvenirs"
-   },
-   {
-    "tip_id": "t13-04",
-    "section": "購物與紀念品",
-    "sort": "1,303",
-    "text": "河內可買：咖啡（Trung Nguyên、G7）、蓮花茶、綠豆糕、釃梅（ô mai）、果乾、絲巾。咖啡、茶、零食去 WinMart 等超市買最省事；磁鐵、小燈籠、T 恤去同春市場或馬媸街（Mã Mây），比觀光店便宜。絲織品在行絲街（Hàng Gai），多半標價。",
-    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
    },
    {
     "tip_id": "t13-05",
@@ -6081,20 +6102,6 @@ self.TRIP_DATA = {
     "sort": "1,304",
     "text": "不要買回台灣：煙燻水牛肉等肉製品、新鮮水果。藥浴草包、高麗參等乾燥植物可能要檢疫，入境時申報或不要買；酒類每人免稅 1 公升。",
     "sources": ""
-   },
-   {
-    "tip_id": "t13-06",
-    "section": "購物與紀念品",
-    "sort": "1,305",
-    "text": "沙壩吃的特產：Shan Tuyết 古樹雪茶、山蜂蜜（約 200,000–400,000 VND／公升）、山楂（táo mèo）果醬和糖果、Mắc Khén 等山區香料（約 50,000–200,000 VND）。山楂酒、San Lùng 米酒一瓶約 150,000–300,000 VND，回台灣每人免稅 1 公升。筍乾、香菇等乾貨要先確認能不能帶回台灣（未查證），不確定就入境時申報。",
-    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
-   },
-   {
-    "tip_id": "t13-07",
-    "section": "購物與紀念品",
-    "sort": "1,306",
-    "text": "沙壩去哪買：要便宜去沙壩市場（Cầu Mây 和 Xuân Viên 路一帶）和週五到週日的夜市，比較幾攤再買；要有標價、包裝好送人，去 Sun Plaza 或鎮上的特產超市（如 Sa Pa Mart）；織品也可以在貓貓村、Tả Van 的攤位直接跟村民買。",
-    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
    }
   ],
   "contacts": [
@@ -6969,7 +6976,317 @@ self.TRIP_DATA = {
     "focal": "置中"
    }
   ],
-  "expenses": []
+  "expenses": [],
+  "gifts": [
+   {
+    "gift_id": "g-sp-01",
+    "region": "沙壩",
+    "sort": "10",
+    "group": "織品與手工藝",
+    "name_zh": "苗族、紅瑤織品圍巾",
+    "name_vn": "Khăn thổ cẩm",
+    "price": "約 200,000–500,000 VND",
+    "where": "沙壩市場、週末夜市、貓貓村步道攤位",
+    "place_ids": "sapa-market, sapa-night-market, cat-cat",
+    "carry": "可帶回",
+    "note": "手織、手繡比機織貴；翻到背面看針腳整不整齊。藍黑色是苗族靛藍染，紅色刺繡多半是紅瑤。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-02",
+    "region": "沙壩",
+    "sort": "11",
+    "group": "織品與手工藝",
+    "name_zh": "織品包包",
+    "name_vn": "Túi thổ cẩm",
+    "price": "約 150,000–800,000 VND",
+    "where": "沙壩市場、週末夜市；想要有標價就去 Sun Plaza",
+    "place_ids": "sapa-market, sapa-night-market, sun-plaza",
+    "carry": "可帶回",
+    "note": "靛藍染第一次洗會掉色，回家先單獨冷水洗。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-03",
+    "region": "沙壩",
+    "sort": "12",
+    "group": "織品與手工藝",
+    "name_zh": "織品零錢包、鑰匙圈",
+    "name_vn": "Ví, móc khóa thổ cẩm",
+    "price": "比圍巾、包包便宜，現場問價",
+    "where": "沙壩市場、週末夜市",
+    "place_ids": "sapa-market, sapa-night-market",
+    "carry": "可帶回",
+    "note": "一次買多個送人最好談價。",
+    "sources": ""
+   },
+   {
+    "gift_id": "g-sp-04",
+    "region": "沙壩",
+    "sort": "13",
+    "group": "織品與手工藝",
+    "name_zh": "民族服裝娃娃鑰匙圈",
+    "name_vn": "Móc khóa búp bê dân tộc",
+    "price": "約 20,000–50,000 VND",
+    "where": "週末夜市、沙壩市場",
+    "place_ids": "sapa-night-market, sapa-market",
+    "carry": "可帶回",
+    "note": "小又輕，適合大量分送同事。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-05",
+    "region": "沙壩",
+    "sort": "14",
+    "group": "織品與手工藝",
+    "name_zh": "小幅織布畫",
+    "name_vn": "Tranh thổ cẩm nhỏ",
+    "price": "約 30,000–100,000 VND",
+    "where": "沙壩市場、週末夜市",
+    "place_ids": "sapa-market, sapa-night-market",
+    "carry": "可帶回",
+    "note": "",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-06",
+    "region": "沙壩",
+    "sort": "15",
+    "group": "織品與手工藝",
+    "name_zh": "苗族銀飾",
+    "name_vn": "Trang sức bạc",
+    "price": "約 100,000–2,000,000 VND",
+    "where": "週末夜市、沙壩市場",
+    "place_ids": "sapa-night-market, sapa-market",
+    "carry": "可帶回",
+    "note": "買前問純度，價差很大；太便宜的多半是合金。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-07",
+    "region": "沙壩",
+    "sort": "20",
+    "group": "茶與山產",
+    "name_zh": "Shan Tuyết 古樹雪茶",
+    "name_vn": "Chè Shan Tuyết",
+    "price": "一包約 20,000–100,000 VND（茶葉一般價）",
+    "where": "Sun Plaza、沙壩市場",
+    "place_ids": "sun-plaza, sapa-market",
+    "carry": "可帶回",
+    "note": "採自海拔 1,500 公尺以上的老茶樹；送人選真空包裝的。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "gift_id": "g-sp-08",
+    "region": "沙壩",
+    "sort": "21",
+    "group": "茶與山產",
+    "name_zh": "山蜂蜜",
+    "name_vn": "Mật ong rừng",
+    "price": "約 200,000–400,000 VND／公升",
+    "where": "沙壩市場、Sun Plaza",
+    "place_ids": "sapa-market, sun-plaza",
+    "carry": "可帶回",
+    "note": "液體要放託運，瓶口用膠帶封好再裝夾鏈袋。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-09",
+    "region": "沙壩",
+    "sort": "22",
+    "group": "茶與山產",
+    "name_zh": "山楂果醬、山楂糖",
+    "name_vn": "Mứt táo mèo, kẹo táo mèo",
+    "price": "現場問價",
+    "where": "沙壩市場、Sun Plaza",
+    "place_ids": "sapa-market, sun-plaza",
+    "carry": "可帶回",
+    "note": "酸甜口味，選有包裝和有效日期的。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/what-to-buy-as-gifts-for-relatives-in-sa-pa-top-attractive-local-specialties-12622"
+   },
+   {
+    "gift_id": "g-sp-10",
+    "region": "沙壩",
+    "sort": "23",
+    "group": "茶與山產",
+    "name_zh": "山區香料（Mắc khén、hạt dổi）",
+    "name_vn": "Mắc khén, hạt dổi",
+    "price": "約 50,000–200,000 VND",
+    "where": "沙壩市場",
+    "place_ids": "sapa-market",
+    "carry": "要申報",
+    "note": "這兩種是乾燥的果實和種子，帶回台灣可能要檢疫；不確定就入境時申報。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "gift_id": "g-sp-11",
+    "region": "沙壩",
+    "sort": "24",
+    "group": "茶與山產",
+    "name_zh": "筍乾、香菇",
+    "name_vn": "Măng khô, nấm hương",
+    "price": "筍乾約 200,000 VND／公斤、香菇約 120,000–130,000 VND／公斤",
+    "where": "沙壩市場、Sun Plaza",
+    "place_ids": "sapa-market, sun-plaza",
+    "carry": "要申報",
+    "note": "能不能帶回台灣沒查證，入境時申報最保險。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "gift_id": "g-sp-12",
+    "region": "沙壩",
+    "sort": "30",
+    "group": "酒",
+    "name_zh": "山楂酒、San Lùng 米酒",
+    "name_vn": "Rượu táo mèo, rượu San Lùng",
+    "price": "一瓶約 150,000–300,000 VND",
+    "where": "沙壩市場、Sun Plaza",
+    "place_ids": "sapa-market, sun-plaza",
+    "carry": "有限額",
+    "note": "回台灣每人免稅 1 公升；玻璃瓶包好放託運。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "gift_id": "g-sp-13",
+    "region": "沙壩",
+    "sort": "40",
+    "group": "不要買",
+    "name_zh": "煙燻水牛肉",
+    "name_vn": "Thịt trâu gác bếp",
+    "price": "約 600,000–800,000 VND／公斤",
+    "where": "到處都有",
+    "place_ids": "",
+    "carry": "不能帶",
+    "note": "肉製品不能帶回台灣，罰款很重；在沙壩當零食吃掉就好。",
+    "sources": "https://sunparadiseland.com/en/tin-tuc/must-visit-places-to-buy-delicious-and-cheap-sapa-specialties-12946"
+   },
+   {
+    "gift_id": "g-hn-01",
+    "region": "河內",
+    "sort": "10",
+    "group": "咖啡與茶",
+    "name_zh": "越南咖啡（Trung Nguyên、G7）",
+    "name_vn": "Cà phê Trung Nguyên, G7",
+    "price": "磨好的咖啡粉 500 克約 90,000–180,000 VND（單一來源）",
+    "where": "WinMart 等超市有標價；同春市場可議價",
+    "place_ids": "hn-winmart, dong-xuan",
+    "carry": "可帶回",
+    "note": "即溶 G7 三合一最好分送；咖啡粉選真空包裝。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-02",
+    "region": "河內",
+    "sort": "11",
+    "group": "咖啡與茶",
+    "name_zh": "咖啡濾杯",
+    "name_vn": "Phin cà phê",
+    "price": "現場問價，便宜",
+    "where": "超市、同春市場",
+    "place_ids": "hn-winmart, dong-xuan",
+    "carry": "可帶回",
+    "note": "配一包咖啡粉一起送。",
+    "sources": ""
+   },
+   {
+    "gift_id": "g-hn-03",
+    "region": "河內",
+    "sort": "12",
+    "group": "咖啡與茶",
+    "name_zh": "蓮花茶",
+    "name_vn": "Trà sen",
+    "price": "超市的量產版本最便宜；專門茶行較貴",
+    "where": "超市；送禮可以去老城區茶行",
+    "place_ids": "hn-winmart, old-quarter",
+    "carry": "可帶回",
+    "note": "",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-04",
+    "region": "河內",
+    "sort": "20",
+    "group": "零食",
+    "name_zh": "綠豆糕",
+    "name_vn": "Bánh đậu xanh",
+    "price": "便宜，有標價",
+    "where": "超市、還劍湖附近的食品行",
+    "place_ids": "hn-winmart",
+    "carry": "可帶回",
+    "note": "Nguyên Hương、Rồng Vàng 等老牌子都有小盒裝。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-05",
+    "region": "河內",
+    "sort": "21",
+    "group": "零食",
+    "name_zh": "話梅、蜜餞",
+    "name_vn": "Ô mai",
+    "price": "現場看秤重價",
+    "where": "Hàng Đường 街（同春市場往南那一段）",
+    "place_ids": "dong-xuan",
+    "carry": "可帶回",
+    "note": "可以先試吃再買。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-06",
+    "region": "河內",
+    "sort": "22",
+    "group": "零食",
+    "name_zh": "菠蘿蜜乾等果乾",
+    "name_vn": "Mít sấy",
+    "price": "有標價",
+    "where": "超市",
+    "place_ids": "hn-winmart",
+    "carry": "可帶回",
+    "note": "選密封包裝，不要買散裝秤重的。",
+    "sources": ""
+   },
+   {
+    "gift_id": "g-hn-07",
+    "region": "河內",
+    "sort": "30",
+    "group": "小物與衣服",
+    "name_zh": "磁鐵、小燈籠",
+    "name_vn": "Nam châm, đèn lồng",
+    "price": "比觀光店便宜 2–3 倍（網路文章）",
+    "where": "同春市場、馬梅街（Mã Mây）一帶",
+    "place_ids": "dong-xuan, old-quarter",
+    "carry": "可帶回",
+    "note": "買一組比較好談價。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-08",
+    "region": "河內",
+    "sort": "31",
+    "group": "小物與衣服",
+    "name_zh": "河內 T 恤",
+    "name_vn": "Áo phông Hà Nội",
+    "price": "現場問價",
+    "where": "同春市場（一次買多件比較便宜）",
+    "place_ids": "dong-xuan",
+    "carry": "可帶回",
+    "note": "週末夜市只開週五到週日，11/9、11/10 遇不到。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-hn-09",
+    "region": "河內",
+    "sort": "32",
+    "group": "小物與衣服",
+    "name_zh": "絲巾",
+    "name_vn": "Khăn lụa",
+    "price": "多半有標價",
+    "where": "行絲街（Hàng Gai）",
+    "place_ids": "hang-gai",
+    "carry": "可帶回",
+    "note": "有標價的店不用殺價。",
+    "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   }
+  ]
  },
  "overview": {
   "nodes": [

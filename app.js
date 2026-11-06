@@ -59,6 +59,8 @@
   const writeKey = () => store.get('key', '');
 
   function build(tables) {
+    /* 舊版 Apps Script 不回傳紀念品分頁：沒有時先用內建資料 */
+    if (!((tables || {}).gifts || []).length && (D.tables.gifts || []).length) tables = Object.assign({}, tables, { gifts: D.tables.gifts });
     const trip = S.tablesToTrip(tables, { overview: D.overview });
     const checks = store.get('checks', {});
     for (const g of trip.checklist) for (const i of g.items) if (i.id in checks) { i.done = checks[i.id]; i.pending = true; }
@@ -142,6 +144,7 @@
   let currentDay = TRIP.days[0].id;
   let mapRegion = 'all';
   let foodRegion = 'hanoi';
+  let giftRegion = '';
 
   function placeCard(id, mode, compact) {
     const p = P(id); if (!p) return '';
@@ -524,6 +527,36 @@
     </div>`;
   }
 
+  /* ---------- 伴手禮 ---------- */
+  const GIFT_TIPS = '購物與紀念品';
+  const CARRY = { ok: 'st-booked', limit: 'st-confirm', declare: 'st-confirm', no: 'st-todo' };
+  function renderGifts() {
+    const regions = Object.keys(FREG).filter((k) => TRIP.gifts.some((g) => g.region === k));
+    if (!regions.includes(giftRegion)) { const td = todayDay(); giftRegion = td && regions.includes(td.region) ? td.region : regions[0] || 'sapa'; }
+    const seg = regions.map((k) => `<button type="button" data-gregion="${k}" aria-pressed="${giftRegion === k}">${FREG[k]}</button>`).join('');
+    const list = TRIP.gifts.filter((g) => g.region === giftRegion);
+    const shops = [...new Set(list.flatMap((g) => g.places))].filter((id) => P(id));
+    const groups = [...new Set(list.map((g) => g.group || '其他'))].map((name) => {
+      const rows = list.filter((g) => (g.group || '其他') === name).map((g) => `<button type="button" class="row-item gift" data-gift="${esc(g.id)}">
+        <span class="t"><b>${esc(g.name)}</b>${g.vn ? `<small class="vn">${esc(g.vn)}</small>` : ''}
+        <span class="chips">${g.price ? `<span class="chip">${esc(g.price)}</span>` : ''}${g.carry ? `<span class="chip ${CARRY[g.carry] || ''}">${esc(S.ENUMS.carry[g.carry])}</span>` : ''}</span>
+        ${g.where ? `<small class="where">${icon('pin')}${esc(g.where)}</small>` : ''}${g.note ? `<small>${esc(g.note)}</small>` : ''}</span></button>`).join('');
+      return `<div class="section-title"><h2>${esc(name)}</h2><small>${list.filter((g) => (g.group || '其他') === name).length} 項</small></div><div class="rows">${rows}</div>`;
+    }).join('');
+    const tips = TRIP.tips.find((t) => t.title === GIFT_TIPS);
+    const src = [...new Set(list.flatMap((g) => g.src))].filter((u) => S.httpUrl(u));
+    return `<div class="col view" data-region="${giftRegion}">
+      <header class="page-head"><h1>伴手禮</h1><p>點品項可以全螢幕顯示越南文，指給老闆看、問價錢。</p></header>
+      <div class="seg" role="group" aria-label="篩選城市">${seg}</div>
+      ${tips ? `<div class="callouts">${tips.items.map((x) => `<div class="callout info">${icon('info')}<div>${esc(x)}</div></div>`).join('')}</div>` : ''}
+      ${shops.length ? `<div class="section-title"><h2>去哪買</h2><small>${shops.length} 處</small></div><div class="rows">${shops.map((id) => { const p = P(id); return `<button type="button" class="row-item shop" data-place="${esc(id)}" data-region="${esc(p.region)}">
+        ${ph(p.photo, { sizes: '48px' })}<span class="t"><b>${esc(p.name)}</b><small>${esc(p.vn && p.vn !== p.name ? p.vn : p.addr || '')}</small></span></button>`; }).join('')}</div>` : ''}
+      ${groups || '<p class="fineprint">這一區還沒有整理。</p>'}
+      <p class="fineprint">價格多為 2025 年旅遊網站的資料，以現場為準。「要申報」是沒查證能不能帶，入境時主動申報最保險。</p>
+      ${src.length ? `<div class="src">${src.map((u) => extLink(u, u)).join('')}</div>` : ''}
+    </div>`;
+  }
+
   /* ---------- 預訂與花費 ---------- */
   function renderBook() {
     const counts = ['booked', 'confirm', 'todo', 'suggest'].map((s) => `<div><b class="num" style="color:var(--${{ booked: 'ok', confirm: 'warn', todo: 'todo', suggest: 'sug' }[s]})">${TRIP.bookings.filter((b) => b.status === s).length}</b><span>${STATUS[s]}</span></div>`).join('');
@@ -624,7 +657,7 @@
     const groups = TRIP.checklist.map((g) => `<div class="check-group"><h3>${esc(g.group)}</h3>
       ${g.items.map((i) => `<label class="chk${i.done ? ' done' : ''}" for="ck-${esc(i.id)}"><input type="checkbox" id="ck-${esc(i.id)}" data-check="${esc(i.id)}" ${i.done ? 'checked' : ''}>
       <span class="t">${esc(i.text)}${i.critical ? '<span class="chip st-todo">重要</span>' : ''}<small>${esc(i.note || '')}</small></span></label>`).join('')}</div>`).join('');
-    const tips = TRIP.tips.map((t) => `<details class="fold"><summary>${esc(t.title)}</summary><ul>${t.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+    const tips = TRIP.tips.filter((t) => t.title !== GIFT_TIPS).map((t) => `<details class="fold"><summary>${esc(t.title)}</summary><ul>${t.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
       ${t.src.length ? `<div class="src">${t.src.map((u) => S.httpUrl(u) ? extLink(u, u) : `<span>${esc(u)}</span>`).join('')}</div>` : ''}</details>`).join('');
     const contacts = TRIP.contacts.map((c) => `<div class="contact"><b>${esc(c.name)}</b><div class="line"><span class="numtxt">${esc(c.num)}</span><button class="btn quiet" type="button" data-copy="${esc(c.num)}">${icon('copy')}複製</button></div>${c.note ? `<small>${esc(c.note)}</small>` : ''}</div>`).join('');
     const phrases = TRIP.phrases.map((p, i) => `<div class="phr"><b>${esc(p.vn)}</b><span>${esc(p.zh)}</span><button class="btn quiet" type="button" data-show-phrase="${i}" aria-label="全螢幕顯示">${icon('show')}</button></div>`).join('');
@@ -747,7 +780,7 @@
   }
 
   /* ---------- 渲染與路由 ---------- */
-  const VIEWS = { itinerary: renderItinerary, map: renderMap, food: renderFood, book: renderBook, prep: renderPrep };
+  const VIEWS = { itinerary: renderItinerary, map: renderMap, food: renderFood, gifts: renderGifts, book: renderBook, prep: renderPrep };
   function render(scrollTop) {
     const y = window.scrollY;
     app.innerHTML = VIEWS[view]();
@@ -787,6 +820,8 @@
     if (ds.map3d) { if (ds.map3d === 'tour') window.Map3D.tour(); else window.Map3D.toggleTilt(); return; }
     if (ds.regionFilter) { mapRegion = ds.regionFilter; render(false); return; }
     if (ds.fregion) { foodRegion = ds.fregion; render(false); return; }
+    if (ds.gregion) { giftRegion = ds.gregion; render(false); return; }
+    if (ds.gift) { const g = TRIP.gifts.find((x) => x.id === ds.gift); if (g) showCard(g.vn || g.name, g.name, 'Cái này bao nhiêu tiền?'); return; }
     if (ds.showPlace) { const p = P(ds.showPlace); if (p) showCard(p.vn || p.name, p.name, 'Làm ơn chở tôi đến địa chỉ này.', p.addr); return; }
     if (ds.showDish) { const d = TRIP.dishes.find((x) => x.id === ds.showDish); if (d) showCard(d.vn, d.zh, 'Cho tôi món này.'); return; }
     if (ds.showPhrase) { const p = TRIP.phrases[Number(ds.showPhrase)]; if (p) showCard(p.vn, p.zh, ''); return; }
