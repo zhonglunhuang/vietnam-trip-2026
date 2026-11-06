@@ -7285,6 +7285,20 @@ self.TRIP_DATA = {
     "carry": "可帶回",
     "note": "有標價的店不用殺價。",
     "sources": "https://localvietnam.com/hanoi/souvenirs-hanoi/"
+   },
+   {
+    "gift_id": "g-sp-14",
+    "region": "沙壩",
+    "sort": "25",
+    "group": "茶與山產",
+    "name_zh": "栗子餅、熟栗子",
+    "name_vn": "Bánh hạt dẻ, hạt dẻ rang",
+    "price": "現場問價",
+    "where": "沙壩市場、週末夜市、Sun Plaza",
+    "place_ids": "sapa-market, sapa-night-market, sun-plaza",
+    "carry": "可帶回",
+    "note": "先看成分：有 thịt（肉）、ruốc（肉鬆）、lạp xưởng（臘腸）、mỡ heo／mỡ lợn（豬油）就不要帶。選有包裝、標示清楚的；熟栗子可以，生栗子不要帶。",
+    "sources": "https://udn.com/news/story/7266/9511878"
    }
   ]
  },
