@@ -2,7 +2,7 @@
    有設定 Google Sheet 時網站會改讀試算表；這份檔案是離線與第一次開啟時的備援。
    由 tools/pull_sheet.js 從試算表重新產生，請不要手動大改。 */
 self.TRIP_DATA = {
- "generated": "2026-11-06T22:55:27+07:00",
+ "generated": "2026-11-07T09:07:04+07:00",
  "tables": {
   "trip": [
    {
@@ -141,8 +141,8 @@ self.TRIP_DATA = {
     "weekday": "一",
     "region": "河內",
     "city": "河內",
-    "title": "在河內慢慢過一天",
-    "lead": "前一晚已經住進 Sao Mai，早上睡飽、吃碗河粉；下午自由安排文化、美食或休息，晚上在老城區吃。",
+    "title": "河內烹飪課，下午慢慢逛",
+    "lead": "早上 9 點飯店接送去市場買菜、上烹飪課（已訂），中午吃自己做的菜；下午回飯店休息或按摩，晚上在老城區吃。",
     "cover_photo": "old-quarter",
     "stay_id": "stay-hanoi2",
     "route_mode": "步行",
@@ -1620,6 +1620,24 @@ self.TRIP_DATA = {
     "label": "紀念品",
     "text": "沙壩最後的購物機會：貓貓村步道上有織品攤；11:30 拿行李前可以去沙壩市場或 Sun Plaza 補買茶、蜂蜜。巴士行李空間有限，易碎的酒瓶包好放手提。",
     "status": ""
+   },
+   {
+    "note_id": "n1109-05",
+    "day_id": "1109",
+    "sort": "5",
+    "kind": "重點",
+    "label": "烹飪課",
+    "text": "花園美食烹飪課＋市場遊覽（Klook，已訂）：09:00–09:15 飯店接送，前一天 20:00 前會通知接送細節。",
+    "status": "已訂"
+   },
+   {
+    "note_id": "n1110-07",
+    "day_id": "1110",
+    "sort": "5",
+    "kind": "待辦",
+    "label": "導遊",
+    "text": "已訂 Klook 河內中文導遊 8 小時，但訂單日期是 11/9，要在 Klook 改成 11/10，並跟導遊確認行程與集合地點。",
+    "status": "待確認"
    }
   ],
   "options": [
@@ -5081,6 +5099,20 @@ self.TRIP_DATA = {
     "place_id": ""
    },
    {
+    "booking_id": "b-cooking",
+    "sort": "140",
+    "date": "2026-11-09",
+    "when_label": "09:00",
+    "type": "體驗",
+    "title": "花園美食烹飪課＋河內市場遊覽",
+    "detail": "Klook 拼團課程，成人 1 位。早上 09:00–09:15 飯店接送；供應商會在前一天 20:00 前用 email、電話或飯店櫃檯通知接送時間與集合地點。",
+    "status": "已訂",
+    "next_action": "接送範圍是老城區飯店，Sao Mai 在文廟旁，可能要加價或改到集合點，11/8 晚上留意通知；結帳時沒寫飯店地址或飲食限制的話，在 Klook App 補給供應商。",
+    "links": "",
+    "due": "2026-11-08",
+    "place_id": "hotel-saomai"
+   },
+   {
     "booking_id": "b-jx716",
     "sort": "150",
     "date": "2026-11-11",
@@ -5107,6 +5139,20 @@ self.TRIP_DATA = {
     "links": "KKday 機場接送 NT$287 起 | https://www.kkday.com/zh-tw/trans/airport_transfer/airport/han-noi-bai-international-airport\nKlook 機場接送 NT$423 起 | https://www.klook.com/zh-TW/airport-transfers/service/han-noi-bai-international-airport/",
     "due": "2026-11-09",
     "place_id": "han-airport"
+   },
+   {
+    "booking_id": "b-guide",
+    "sort": "145",
+    "date": "2026-11-10",
+    "when_label": "8 小時",
+    "type": "導遊",
+    "title": "河內中文導遊 8 小時",
+    "detail": "Klook 河內導遊服務，中文導遊 1 位。Klook 訂單上的出遊日期目前是 11/9，不是 11/10。",
+    "status": "待確認",
+    "next_action": "在 Klook App 把出遊日期改成 11/10（不能自己改就找客服）；再跟導遊約集合時間、地點和行程，順便問能不能帶去寧平。",
+    "links": "",
+    "due": "2026-11-08",
+    "place_id": ""
    }
   ],
   "stays": [
